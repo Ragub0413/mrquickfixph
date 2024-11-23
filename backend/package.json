@@ -1,0 +1,40 @@
+{
+  "name": "dashboard-v2",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon backend/server.js",
+    "build": "npm install && npm install --prefix capstone-dashboard-v2 && npm run build --prefix capstone-dashboard-v2",
+    "start": "node server.js",
+    "render-postbuild": "npm install --prefix capstone-dashboard-v2 && npm run build --prefix capstone-dashboard-v2"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "autoprefixer": "^10.4.20",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "cloudinary": "^2.5.1",
+    "connect-mongo": "^5.1.0",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.3",
+    "mongoose-autopopulate": "^1.1.0",
+    "multer": "^1.4.5-lts.1",
+    "nodemailer": "^6.9.16",
+    "vite": "^5.4.8"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.3",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.1.7",
+    "vite": "^5.4.8"
+  }
+}

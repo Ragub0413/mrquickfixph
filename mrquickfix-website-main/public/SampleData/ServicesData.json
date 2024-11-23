@@ -1,0 +1,44 @@
+[
+  {
+    "id": 1,
+    "image": "../PublicAsset/FitsoutIMG.jpg",
+    "title": "Fits-outs (Painting, Carpentry, Masonry)",
+    "description": "We have been offering professional services such as painting, carpentry and masonry. Our team of experts will handle every aspect of your fits-out project, from start to finish."
+  },
+  {
+    "id": 2,
+    "image": "../PublicAsset/ElectricalIMG.jpg",
+    "title": "Electrical Works",
+    "description": "Expert electrical services for all your home needs, including installation, maintenance, and repair."
+  },
+  {
+    "id": 3,
+    "image": "../PublicAsset/KitchenandBathIMG.jpg",
+    "title": "Kitchen and Bath Renovation",
+    "description": "Transforming kitchens and baths into beautiful spaces. Our design team works closely with you to create your dream kitchen or bath."
+  },
+  {
+    "id": 4,
+    "image": "../PublicAsset/AirconServicesIMG.jpg",
+    "title": "Aircon Services",
+    "description": "Keep your cool with our air conditioning services, including repair, installation, and regular maintenance."
+  },
+  {
+    "id": 5,
+    "image": "../PublicAsset/DoorandWindowRepairsIMG.jpg",
+    "title": "Door and Window Repairs",
+    "description": "Reliable door and window repair services to enhance your home's security and appearance."
+  },
+  {
+    "id": 6,
+    "image": "../PublicAsset/OutdoorandLandscapingIMG.jpg",
+    "title": "Outdoor and Landscaping",
+    "description": "Enhancing your outdoor spaces with expert landscaping. From gardens to patios, we do it all."
+  },
+  {
+    "id": 7,
+    "image": "../PublicAsset/HouseholdCleaningServicesIMG.jpg",
+    "title": "Household Cleaning Services",
+    "description": "Professional cleaning services for a spotless home. Our team ensures your home is clean and welcoming."
+  }
+]

@@ -1,0 +1,212 @@
+[
+    {
+      "id": 1,
+      "name": "John Doe",
+      "feedback": "Working with this team was a fantastic experience. They brought our vision to life with exceptional attention to detail and creativity. Every project phase was handled professionally, and the end result exceeded our expectations. Highly recommend their services!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-20"
+    },
+    {
+      "id": 2,
+      "name": "Jane Smith",
+      "feedback": "Very satisfied with the quality of work. Highly recommend!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-18"
+    },
+    {
+      "id": 3,
+      "name": "Michael Johnson",
+      "feedback": "Great experience from start to finish. The staff was friendly and efficient.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-15"
+    },
+    {
+      "id": 4,
+      "name": "Emily Davis",
+      "feedback": "The project exceeded my expectations. The attention to detail was impressive.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-13"
+    },
+    {
+      "id": 5,
+      "name": "David Brown",
+      "feedback": "Prompt and reliable service. I will definitely use their services again.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-11"
+    },
+    {
+      "id": 6,
+      "name": "Linda White",
+      "feedback": "Exceptional craftsmanship and customer service. Highly recommend!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-09"
+    },
+    {
+      "id": 7,
+      "name": "James Wilson",
+      "feedback": "Professional and reliable team. The project was completed on time and within budget.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-06"
+    },
+    {
+      "id": 8,
+      "name": "Patricia Taylor",
+      "feedback": "Amazing results! The team went above and beyond to ensure our satisfaction.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-03"
+    },
+    {
+      "id": 9,
+      "name": "Robert Anderson",
+      "feedback": "High-quality work and great attention to detail. Highly recommend their services!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-02"
+    },
+    {
+      "id": 10,
+      "name": "Mary Thomas",
+      "feedback": "The team was efficient and professional. The end result was exactly what we wanted.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-08-01"
+    },
+    {
+      "id": 11,
+      "name": "Andrew Walker",
+      "feedback": "Exceeded expectations at every step. They made the process seamless.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-30"
+    },
+    {
+      "id": 12,
+      "name": "Samantha Martinez",
+      "feedback": "I was very impressed with their attention to detail and professionalism.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-28"
+    },
+    {
+      "id": 13,
+      "name": "Brian Hall",
+      "feedback": "Great quality work delivered on time. Highly recommend this team!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-26"
+    },
+    {
+      "id": 14,
+      "name": "Laura Scott",
+      "feedback": "The customer service was fantastic, and the team was incredibly responsive.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-24"
+    },
+    {
+      "id": 15,
+      "name": "Chris Green",
+      "feedback": "Fantastic results and excellent communication throughout the project.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-22"
+    },
+    {
+      "id": 16,
+      "name": "Megan Young",
+      "feedback": "A truly professional team that delivered beyond expectations.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-20"
+    },
+    {
+      "id": 17,
+      "name": "Daniel King",
+      "feedback": "Their attention to detail is what sets them apart. Fantastic work!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-18"
+    },
+    {
+      "id": 18,
+      "name": "Jessica Hill",
+      "feedback": "We loved the end result and the process was smooth and professional.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-16"
+    },
+    {
+      "id": 19,
+      "name": "Mark Lewis",
+      "feedback": "They exceeded my expectations. I couldn't be happier with the outcome.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-14"
+    },
+    {
+      "id": 20,
+      "name": "Karen Clark",
+      "feedback": "Professional, reliable, and skilled. I highly recommend them for any project.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-12"
+    },
+    {
+      "id": 21,
+      "name": "Steve Rodriguez",
+      "feedback": "They took my idea and turned it into something amazing. Great job!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-10"
+    },
+    {
+      "id": 22,
+      "name": "Michelle Lee",
+      "feedback": "Their creativity and attention to detail were exactly what we needed.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-08"
+    },
+    {
+      "id": 23,
+      "name": "Paul Harris",
+      "feedback": "They listened to our needs and delivered exactly what we wanted.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-06"
+    },
+    {
+      "id": 24,
+      "name": "Donna Wright",
+      "feedback": "Impressed with their professionalism and commitment to quality.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-04"
+    },
+    {
+      "id": 25,
+      "name": "Ryan Walker",
+      "feedback": "Great team to work with. We are very satisfied with the end result.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-07-02"
+    },
+    {
+      "id": 26,
+      "name": "Kimberly Robinson",
+      "feedback": "Amazing service, attention to detail, and excellent customer experience.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-06-30"
+    },
+    {
+      "id": 27,
+      "name": "Ethan Lopez",
+      "feedback": "Very happy with the final product. They exceeded my expectations.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-06-28"
+    },
+    {
+      "id": 28,
+      "name": "Sophia Wilson",
+      "feedback": "Efficient, reliable, and easy to work with. Would hire them again.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-06-26"
+    },
+    {
+      "id": 29,
+      "name": "Benjamin Perez",
+      "feedback": "Creative and professional team that delivered outstanding results.",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-06-24"
+    },
+    {
+      "id": 30,
+      "name": "Lisa Adams",
+      "feedback": "Great attention to detail and superb craftsmanship. Highly recommend!",
+      "image": "https://via.placeholder.com/150",
+      "date": "2024-06-22"
+    }
+]

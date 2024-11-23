@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "image": "../PublicAsset/BGBathroomRenovation.jpg"
+    },
+    {
+        "id": 2,
+        "image": "../PublicAsset/Background.png"
+    },
+    {
+        "id": 3,
+        "image": "../PublicAsset/Background2.png"
+    }
+]

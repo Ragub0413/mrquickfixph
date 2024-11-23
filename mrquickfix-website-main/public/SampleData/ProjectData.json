@@ -1,0 +1,266 @@
+[
+  {
+    "id": 1,
+    "name": "House Renovation 1",
+    "category": ["Electrical Works", "Kitchen and Bath Renovation"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-01-15"
+  },
+  {
+    "id": 2,
+    "name": "House Renovation 2",
+    "category": ["Aircon Services"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-02-10"
+  },
+  {
+    "id": 3,
+    "name": "House Renovation 3",
+    "category": ["Outdoor and Landscaping", "Electrical Works"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-03-22"
+  },
+  {
+    "id": 4,
+    "name": "House Renovation 4",
+    "category": ["Fits-out", "Door and Window Repairs"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-04-12"
+  },
+  {
+    "id": 5,
+    "name": "House Renovation 5",
+    "category": ["Household Cleaning Services"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-05-05"
+  },
+  {
+    "id": 6,
+    "name": "House Renovation 6",
+    "category": ["Kitchen and Bath Renovation"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-06-18"
+  },
+  {
+    "id": 7,
+    "name": "House Renovation 7",
+    "category": ["Aircon Services", "Fits-out"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-07-25"
+  },
+  {
+    "id": 8,
+    "name": "House Renovation 8",
+    "category": ["Door and Window Repairs", "Electrical Works"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-08-15"
+  },
+  {
+    "id": 9,
+    "name": "House Renovation 9",
+    "category": ["Outdoor and Landscaping"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-09-09"
+  },
+  {
+    "id": 10,
+    "name": "House Renovation 10",
+    "category": ["Fits-out", "Household Cleaning Services"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-10-20"
+  },
+  {
+    "id": 11,
+    "name": "House Renovation 11",
+    "category": ["Kitchen and Bath Renovation", "Aircon Services"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-11-30"
+  },
+  {
+    "id": 12,
+    "name": "House Renovation 12",
+    "category": ["Electrical Works"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2023-12-14"
+  },
+  {
+    "id": 13,
+    "name": "House Renovation 13",
+    "category": ["Fits-out", "Outdoor and Landscaping"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-01-22"
+  },
+  {
+    "id": 14,
+    "name": "House Renovation 14",
+    "category": ["Door and Window Repairs", "Household Cleaning Services"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-02-18"
+  },
+  {
+    "id": 15,
+    "name": "House Renovation 15",
+    "category": ["Kitchen and Bath Renovation"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-03-10"
+  },
+  {
+    "id": 16,
+    "name": "House Renovation 16",
+    "category": ["Aircon Services", "Fits-out"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-04-05"
+  },
+  {
+    "id": 17,
+    "name": "House Renovation 17",
+    "category": ["Outdoor and Landscaping", "Electrical Works"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-05-25"
+  },
+  {
+    "id": 18,
+    "name": "House Renovation 18",
+    "category": [
+      "Household Cleaning Services",
+      "Door and Window Repairs",
+      "Kitchen and Bath Renovation"
+    ],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-06-15"
+  },
+  {
+    "id": 19,
+    "name": "House Renovation 19",
+    "category": ["Fits-out", "Kitchen and Bath Renovation"],
+    "thumbnail": "../PublicAsset/ProjectIMG2.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-07-01"
+  },
+  {
+    "id": 20,
+    "name": "House Renovation 20",
+    "category": ["Electrical Works", "Aircon Services"],
+    "thumbnail": "../PublicAsset/ProjectIMG1.jpg",
+    "images": [
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg",
+      "../PublicAsset/RenovationIMG.jpg",
+      "../PublicAsset/RenovationIMG2.jpg"
+    ],
+    "date": "2024-07-12"
+  }
+]
