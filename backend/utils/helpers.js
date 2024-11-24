@@ -8,7 +8,7 @@ export const generateOTP = () => {
 };
 
 // Function to send emails
-export const sendEmail = async (to, subject, text) => {
+export const sendEmail = async (email, title, body,attachments) => {
   try {
     const transporter = nodemailer.createTransport({
       service: process.env.EMAIL_SERVICE, 
@@ -16,16 +16,17 @@ export const sendEmail = async (to, subject, text) => {
       port: process.env.EMAIL_PORT,
       secure: true,
       auth: {
-        user: process.env.EMAIL_USER, 
-        pass: process.env.EMAIL_PASSWORD 
+        user: process.env.EMAIL_USER_BUSINESS, 
+        pass: process.env.EMAIL_PASSWORD_BUSINESS
       }
     });
 
     await transporter.sendMail({
-      from: process.env.EMAIL_FROM,
-      to,
-      subject,
-      text,
+      from: process.env.EMAIL_BUSINESS_FROM,
+      to: email,
+      subject:title,
+      html: body,
+      attachments:attachments
     });
 
     console.log('Email sent successfully!');

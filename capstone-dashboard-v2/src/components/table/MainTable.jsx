@@ -41,7 +41,8 @@ const MainTable = ({ setSelectedJobOrder }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [entriesToShow, setEntriesToShow] = useState(10);
   const [statusFilter, setStatusFilter] = useState("All");
-  const { fetchProjects, projects, updateJobOrder, alertJobOrder } =
+
+  const { fetchProjects, projects, updateJobOrder, alertJobOrder, updateJobOrderAddQuotation } =
     useJobOrderData();
   const [updatedProject, setUpdatedProject] = useState(null);
   const [openQuotationModal, setOpenQuotationModal] = useState(false);
@@ -372,15 +373,25 @@ const MainTable = ({ setSelectedJobOrder }) => {
           return;
         }
 
-        const updatedJob = {
-          ...updatedProject,
-          jobStatus: "in progress",
-          updatedBy: userID,
-        };
+        // const updatedJob = {
+        //   ...updatedProject,
+        //   jobStatus: "in progress",
+        //   updatedBy: userID,
+        // };
+        
+        const updatedJob = new FormData();
+   
+        updatedJob.append("jobQuotation", updatedProject.jobQuotation);
+        updatedJob.append("jobStartDate", updatedProject.jobStartDate);
+        updatedJob.append("jobEndDate", updatedProject.jobEndDate);
+        updatedJob.append("jobStatus", "in progress");
+        updatedJob.append("updatedBy", userID);
+        updatedJob.append("userID", userID);
 
-        const { success, message } = await updateJobOrder(
-          updatedProject._id,
-          updatedJob,
+       
+        const { success, message } = await updateJobOrderAddQuotation(
+         updatedProject._id,
+          updatedJob
         );
 
         setButtonLoading(false);
@@ -393,6 +404,7 @@ const MainTable = ({ setSelectedJobOrder }) => {
         }
       } catch (error) {
         setButtonLoading(false);
+        console.log(error)
         Swal.fire("Error", "Failed to update job order.", "error");
       }
     }
@@ -422,6 +434,7 @@ const MainTable = ({ setSelectedJobOrder }) => {
         const updatedJob = {
           ...jobOrder,
           jobStatus: "completed",
+          originalStatus: jobOrder.jobStatus,
           updatedBy: userID,
         };
 
@@ -451,7 +464,7 @@ const MainTable = ({ setSelectedJobOrder }) => {
     setQuotationUploaded(!!file);
     setUpdatedProject((prev) => ({
       ...prev,
-      jobQuotation: file ? file.name : "",
+      jobQuotation: file ? file : "",
     }));
   };
 

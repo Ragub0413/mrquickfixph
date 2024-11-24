@@ -16,6 +16,7 @@ import ResetPassword from "./components/login/ResetPassword";
 import Report from "./pages/Report";
 import MyProfile from "./pages/MyProfile";
 import Swal from "sweetalert2";
+import TestimonialForm from "./components/form/TestimonialForm";
 
 
 const isTokenExpired = (token) => {
@@ -172,6 +173,14 @@ function App() {
       element: <ResetPassword />,
     },
     {
+      path: "/feedback",
+      element: <TestimonialForm />,
+    },
+    {
+      path: "/feedback/:token",
+      element: <TestimonialForm />,
+    },
+    {
       element: <PrivateRoute />,
       children: [
         {
@@ -184,6 +193,7 @@ function App() {
             { path: "/reports", element: <Report /> },
             { path: "/my-profile", element: <MyProfile /> },
             { path: "/content-management", element: <ContentManagement /> },
+           
           ],
         },
       ],

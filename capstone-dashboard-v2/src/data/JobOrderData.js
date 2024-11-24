@@ -5,45 +5,69 @@ export const useJobOrderData = create((set) => ({
     projects: [] || '',
     setProjects: (projects) => set({ projects }),
 
-    // Add job order
+    // Add job order with file quotation 
     createProject: async (newJob) => {
         const userID = localStorage.getItem("userID");
         if (!userID) {
             console.error("User ID not found in localStorage. Please ensure the user is logged in.");
             return { success: false, message: "User is not authenticated" };
         }
-       
-        for (let [name, value] of newJob){
-           
-            if(name === "clientFirstName" || 
-                name === "clientLastName" || 
-                name ==="clientAddress"|| 
-                name === "jobType" || 
-                name === "jobServices"
-            )
-            {
-                if(value === "" || value === null){
-                    return { success: false, 
-                        message: "Please fill in all required fields" };
+        for (let [name, value] of newJob) {
+            if (name === "clientFirstName" ||
+                name === "clientLastName" ||
+                name === "clientAddress" ||
+                name === "jobType" ||
+                name === "jobServices") {
+                if (value === "" || value === null) {
+                    return {
+                        success: false,
+                        message: "Please fill in all required fields"
+                    };
                 }
-              
-        try { 
-             const res = await axios.post("/api/job-orders/",newJob, {
-                 headers: {
-                    "Content-Type": "multipart/form-data",
+                try {
+                    const res = await axios.post("/api/job-orders/", newJob, {
+                        headers: {
+                            "Content-Type": "multipart/form-data",
+                        },
+                    });
+                    set((state) => ({ projects: [...state.projects, res.data.data] }));
+                    return { success: true, message: "Project created successfully" };
+                }
+
+                catch (error) {
+                    console.error("Error saving job order:", error.response?.data?.message || error.message);
+                    return { success: false, message: error.response?.data?.message || "An error occurred" };
+                }
+            }
+        }
+    },
+
+    //Add job order w/o file upload
+    createProjectOnProcess: async (newJob) => {
+        const userID = localStorage.getItem("userID");
+
+        if (!userID) {
+            console.error("User ID not found in localStorage. Please ensure the user is logged in.");
+            return { success: false, message: "User is not authenticated" };
+        }
+
+        if (!newJob.clientFirstName || !newJob.clientLastName || !newJob.clientAddress || !newJob.jobType || newJob.jobServices.length === 0) {
+            return { success: false, message: "Please fill in all required fields" };
+        }
+
+        try {
+            const res = await axios.post("/api/job-orders/savenofile", { ...newJob, createdBy: userID }, {
+                headers: {
+                    "Content-Type": "application/json",
                 },
             });
             set((state) => ({ projects: [...state.projects, res.data.data] }));
             return { success: true, message: "Project created successfully" };
-            } 
-
-        catch (error) {
-                console.error("Error saving job order:", error.response?.data?.message || error.message);
-                return { success: false, message: error.response?.data?.message || "An error occurred" };
-            }
-       }
-    }
-},
+        } catch (error) {
+            console.error("Error saving job order:", error.response?.data?.message || error.message);
+            return { success: false, message: error.response?.data?.message || "An error occurred" };
+        }
+    },
 
     // Get all job orders
     fetchProjects: async () => {
@@ -55,6 +79,40 @@ export const useJobOrderData = create((set) => ({
         }
     },
 
+    updateJobOrderAddQuotation: async (id, updatedJob) => {
+        const userID = localStorage.getItem("userID");
+
+        if (!userID) {
+            console.error("User ID not found in localStorage. Please ensure the user is logged in.");
+            return { success: false, message: "User ID is required" };
+        }
+        for (let [name, value] of updatedJob) {
+            console.log(value);
+            if (name === "jobQuotation", value === "null") {
+                return { success: false, message: "Please fill in all required fields" };
+            }
+
+            try {
+                const res = await axios.patch(`/api/job-orders/${id}/updateQuotation`, updatedJob, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                    },
+                });
+                const data = res.data;
+
+                if (!data.success) return { success: false, message: data.message };
+
+                set((state) => ({
+                    projects: state.projects.map((project) => (project._id === id ? data.data : project)),
+                }));
+                return { success: true, message: "Job order updated successfully" };
+            }
+            catch (error) {
+                console.error("Error updating job order:", error.response?.data || error.message);
+                return { success: false, message: error.response?.data?.message || "An error occurred" };
+            }
+        }
+    },
     // Update job order
     updateJobOrder: async (id, updatedJob) => {
         const userID = localStorage.getItem("userID");
@@ -135,9 +193,9 @@ export const useJobOrderData = create((set) => ({
             return { success: false, message: "User ID is required to update the job notification alert" };
         }
 
-        const updatedData = { 
+        const updatedData = {
             jobNotificationAlert: alertJobOrder.jobNotificationAlert,
-            userID: userID 
+            userID: userID
         };
 
         try {
@@ -158,9 +216,9 @@ export const useJobOrderData = create((set) => ({
             return { success: true, message: "Job notification alert updated!" };
         } catch (error) {
             console.error("Error updating job notification alert:", error.response?.data || error.message);
-            return { 
-                success: false, 
-                message: error.response?.data?.message || "Failed to update job notification alert" 
+            return {
+                success: false,
+                message: error.response?.data?.message || "Failed to update job notification alert"
             };
         }
     },
@@ -174,11 +232,11 @@ export const useJobOrderData = create((set) => ({
                 },
             });
             const data = res.data;
-    
+
             if (!data.success) return { success: false, message: data.message };
-    
+
             set((state) => ({
-                projects: state.projects.map((project) => 
+                projects: state.projects.map((project) =>
                     project._id === id ? { ...project, isArchived: true, archivedAt: new Date() } : project
                 ),
             }));

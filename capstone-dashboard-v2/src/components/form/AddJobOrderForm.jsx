@@ -30,14 +30,18 @@ const servicesList = {
 };
 
 const AddJobOrderForm = ({ onClose, adminId }) => {
-   const userID = localStorage.getItem("userID");
+  const userID = localStorage.getItem("userID");
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [quotationUploaded, setQuotationUploaded] = useState(false);
   const [inspectionDate, setInspectionDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [filteredServices, setFilteredServices] = useState([]);
-  const [newData,setNewData] = useState({})
+  const [newData, setNewData] = useState({})
+  const [status,setStatus] = useState({
+      success: true,
+      message:''
+    })
   const [newJobOrder, setNewJobOrder] = useState({
     projectID: "",
     clientFirstName: "",
@@ -88,7 +92,7 @@ const AddJobOrderForm = ({ onClose, adminId }) => {
     });
   };
 
-  const { createProject } = useJobOrderData();
+  const { createProject, createProjectOnProcess} = useJobOrderData();
 
   const handleAddJobOrder = async () => {
     if (
@@ -110,44 +114,58 @@ const AddJobOrderForm = ({ onClose, adminId }) => {
 
 
     const newJob = new FormData();
-    newJob.append("projectID", newJobOrder.projectID )
-    newJob.append("clientFirstName",newJobOrder.clientFirstName)
-    newJob.append("clientLastName",newJobOrder.clientLastName)
-    newJob.append("clientAddress",newJobOrder.clientAddress)
-    newJob.append("clientEmail",newJobOrder.clientEmail)
-    newJob.append("clientPhone",newJobOrder.clientPhone)
-    newJob.append("jobType",newJobOrder.jobType)
-    newJob.append("jobServices",newJobOrder.jobServices)
-    newJob.append("jobQuotation",newJobOrder.jobQuotation)
-    newJob.append("jobStartDate",newJobOrder.jobStartDate)
-    newJob.append("jobEndDate",newJobOrder.jobEndDate)
-    newJob.append("jobExtendedDate",newJobOrder.jobExtendedDate)
-    newJob.append("jobInspectionDate",newJobOrder.jobInspectionDate)
-    newJob.append("jobStatus",newJobOrder.jobStatus)
-    newJob.append("jobNotificationAlert",newJobOrder.jobNotificationAlert)
-    newJob.append("jobCancellationReason",newJobOrder.jobCancellationReason)
-    newJob.append("jobPreviousStatus",newJobOrder.jobPreviousStatus)
-    newJob.append("createdBy",userID)
-  
+    newJob.append("projectID", newJobOrder.projectID)
+    newJob.append("clientFirstName", newJobOrder.clientFirstName)
+    newJob.append("clientLastName", newJobOrder.clientLastName)
+    newJob.append("clientAddress", newJobOrder.clientAddress)
+    newJob.append("clientEmail", newJobOrder.clientEmail)
+    newJob.append("clientPhone", newJobOrder.clientPhone)
+    newJob.append("jobType", newJobOrder.jobType)
+    newJob.append("jobServices", newJobOrder.jobServices)
+    newJob.append("jobQuotation", newJobOrder.jobQuotation)
+    newJob.append("jobStartDate", newJobOrder.jobStartDate)
+    newJob.append("jobEndDate", newJobOrder.jobEndDate)
+    newJob.append("jobExtendedDate", newJobOrder.jobExtendedDate)
+    newJob.append("jobInspectionDate", newJobOrder.jobInspectionDate)
+    newJob.append("jobStatus", newJobOrder.jobStatus)
+    newJob.append("jobNotificationAlert", newJobOrder.jobNotificationAlert)
+    newJob.append("jobCancellationReason", newJobOrder.jobCancellationReason)
+    newJob.append("jobPreviousStatus", newJobOrder.jobPreviousStatus)
+    newJob.append("createdBy", userID)
+
     setLoading(true);
-   const { success, message } = await createProject(newJob);
 
-    setLoading(false);
+    
+    if(newJobOrder.jobQuotation === null)
+    {
+      const {success,message} = await createProjectOnProcess(newJobOrder);
+     status.message = message;
+     status.success = success
+     setLoading(false);
 
-    if (!success) {
+    } 
+    else{
+      const {success,message} = await createProject(newJob);
+     status.message = message;
+     status.success = success
+     setLoading(false)
+    }
+  
+    if (!status.success) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text: message,
+        text: status.message,
       });
     } else {
       Swal.fire({
         icon: "success",
         title: "Success",
-        text: message,
+        text: status.message,
       });
       onClose();
     }
+    
   };
 
   useEffect(() => {

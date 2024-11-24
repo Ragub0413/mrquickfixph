@@ -45,9 +45,14 @@ const ViewOnProcess = ({ jobOrder, onClose }) => {
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const { updateJobOrder } = useJobOrderData();
+  const { updateJobOrder,updateJobOrderAddQuotation } = useJobOrderData();
   const { getLoggedInAdmin, admin } = useAdminData();
   const [admins, setAdmins] = useState([]);
+  const userID = localStorage.getItem("userID");
+  const [status,setStatus] = useState({
+    message:'',
+    success: true
+  })
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -130,21 +135,71 @@ const ViewOnProcess = ({ jobOrder, onClose }) => {
       showCancelButton: true,
       confirmButtonText: "Save",
     });
-
+    const isValidURL =(url)=>{
+          try {
+            new URL(url);
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
     if (result.isConfirmed) {
       try {
         setLoading(true);
-        const { success, message } = await updateJobOrder(
-          updatedProject._id,
-          updatedProject,
-        );
-        setLoading(false);
+        // if(updatedProject.jobQuotation !== File){
+        //   const { success, message } = await updateJobOrder(
+        //     updatedProject._id,
+        //     updatedProject,
+        //   );
+        //   status.success = success;
+        //   status.message = message;
+        //   setLoading(false);
+        // }
+        // else{
+        //   console.log("update also the quotation")
+        //   console.log(updatedProject.jobQuotation)
+        //   setLoading(false);
+        // }
+        if(!isValidURL(updatedProject.jobQuotation)){
+          const updateData = new FormData();
+          updateData.append("jobQuotation",updatedProject.jobQuotation)
+          updateData.append("jobStartDate",updatedProject.jobStartDate)
+          updateData.append("jobEndDate",updatedProject.jobEndDate)
+          // updateData.append("jobStatus","in pto")
+          updateData.append("updatedBy",userID)
+          updateData.append("userID",userID)
+          updateData.append("clientFirstName",updatedProject.clientFirstName)
+          updateData.append("clientLastName",updatedProject.clientLastName)
+          updateData.append("clientAddress",updatedProject.clientAddress)
+          updateData.append("jobType",updatedProject.jobType)
+          updateData.append("jobServices",updatedProject.jobServices)
+      
+           for(let value of updateData.values()){
+            console.log(value)
+           }
+           const { success, message } = await updateJobOrderAddQuotation(
+            updatedProject._id,
+            updateData,
+          );
+          status.success = success;
+          status.message = message;
+          setLoading(false);
+        }
+        else{
+            const { success, message } = await updateJobOrder(
+            updatedProject._id,
+            updatedProject,
+          );
+          status.success = success;
+          status.message = message;
+          setLoading(false);
+        }
 
-        if (success) {
+        if (status.success) {
           showAlert("success", "Saved!", "Job order updated successfully!");
           onClose();
         } else {
-          showAlert("error", "Oops...", message);
+          showAlert("error", "Oops...", status.message);
         }
       } catch (error) {
         setLoading(false);
