@@ -129,51 +129,24 @@ const ViewOnProcess = ({ jobOrder, onClose }) => {
       showAlert("error", "Error", "Invalid project data");
       return;
     }
-
     const result = await Swal.fire({
       title: "Do you want to save the changes?",
       showCancelButton: true,
       confirmButtonText: "Save",
     });
     const isValidURL =(url)=>{
-          try {
-            new URL(url);
-            return true;
-        } catch (error) {
-            return false;
-        }
+      try {
+        new URL(url);
+        return true;
+    } catch (error) {
+        return false;
     }
+}
     if (result.isConfirmed) {
       try {
         setLoading(true);
-        
-        if(!isValidURL(updatedProject.jobQuotation)){
-          const updateData = new FormData();
-          updateData.append("jobQuotation",updatedProject.jobQuotation)
-          updateData.append("jobStartDate",updatedProject.jobStartDate)
-          updateData.append("jobEndDate",updatedProject.jobEndDate)
-          // updateData.append("jobStatus","in pto")
-          updateData.append("updatedBy",userID)
-          updateData.append("userID",userID)
-          updateData.append("clientFirstName",updatedProject.clientFirstName)
-          updateData.append("clientLastName",updatedProject.clientLastName)
-          updateData.append("clientAddress",updatedProject.clientAddress)
-          updateData.append("jobType",updatedProject.jobType)
-          for(let i=0; i < updateData.jobServices.length; i++){
-            newJob.append("jobServices", updateData.jobServices[i])
-          }
-      
-           
-           const { success, message } = await updateJobOrderAddQuotation(
-            updatedProject._id,
-            updateData,
-          );
-          status.success = success;
-          status.message = message;
-          setLoading(false);
-        }
-        else{
-            const { success, message } = await updateJobOrder(
+        if(jobOrder.jobStatus ==='on process'){
+          const { success, message } = await updateJobOrder(
             updatedProject._id,
             updatedProject,
           );
@@ -181,15 +154,53 @@ const ViewOnProcess = ({ jobOrder, onClose }) => {
           status.message = message;
           setLoading(false);
         }
-
+        else if(jobOrder.jobStatus ==='in progress'){
+          if(!isValidURL(updatedProject.jobQuotation)){
+            const updateData = new FormData();
+            updateData.append("jobQuotation",updatedProject.jobQuotation)
+            updateData.append("jobStartDate",updatedProject.jobStartDate)
+            updateData.append("jobEndDate",updatedProject.jobEndDate)
+            // updateData.append("jobStatus","in pto")
+            updateData.append("updatedBy",userID)
+            updateData.append("userID",userID)
+            updateData.append("clientFirstName",updatedProject.clientFirstName)
+            updateData.append("clientLastName",updatedProject.clientLastName)
+            updateData.append("clientAddress",updatedProject.clientAddress)
+            updateData.append("jobType",updatedProject.jobType)
+          //  if(updatedProject.jobServices.length !== 0){
+            for(let i=0; i < updatedProject.jobServices.length; i++){
+              updateData.append("jobServices", updatedProject.jobServices[i])
+            }
+          //}
+             
+             const { success, message } = await updateJobOrderAddQuotation(
+              updatedProject._id,
+              updateData,
+            );
+            status.success = success;
+            status.message = message;
+            setLoading(false);
+          }
+          else{
+              const { success, message } = await updateJobOrder(
+              updatedProject._id,
+              updatedProject
+               );
+            status.success = success;
+            status.message = message;
+            setLoading(false);
+          }
+        }
         if (status.success) {
           showAlert("success", "Saved!", "Job order updated successfully!");
           onClose();
         } else {
           showAlert("error", "Oops...", status.message);
         }
-      } catch (error) {
+      }
+      catch (error) {
         setLoading(false);
+        console.log(error)
         showAlert("error", "Error", "Failed to update job order.");
       }
     }

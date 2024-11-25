@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState,useCallback, useEffect } from "react";
 import { Title } from "../props/Title";
 import NoData from "../../assets/undraw_No_data_re_kwbl.png";
 import {
@@ -18,6 +18,7 @@ import {
   Tooltip,
 } from "@material-tailwind/react";
 import Swal from "sweetalert2";
+import { useServicesData } from "../../data/ServiceData";
 
 const ServicesTable = () => {
   const [loading, setLoading] = useState(false);
@@ -33,28 +34,73 @@ const ServicesTable = () => {
   const [serviceName, setServiceName] = useState("");
   const [jobType, setJobType] = useState("");
   const [description, setDescription] = useState("");
+ const {fetchServiceData} = useServicesData()
+  // useEffect(() => {
+  //   setLoading(true);
 
-  useEffect(() => {
-    setLoading(true);
+  //   // const sampleServices = [
+  //   //   {
+  //   //     serviceName: "Fits-outs (Painting, Carpentry, Masonry)",
+  //   //     jobType: "Repairs",
+  //   //     image: "https://via.placeholder.com/500",
+  //   //     description:
+  //   //       "We have been offering professional services such as painting, carpentry and masonry. Our team of experts will handle every aspect of your fits-out project, from start to finish.",
+  //   //   },
+  //   //];
 
-    const sampleServices = [
-      {
-        serviceName: "Fits-outs (Painting, Carpentry, Masonry)",
-        jobType: "Repairs",
-        image: "https://via.placeholder.com/500",
-        description:
-          "We have been offering professional services such as painting, carpentry and masonry. Our team of experts will handle every aspect of your fits-out project, from start to finish.",
-      },
-    ];
+  //   // Simulate loading (remove this if using a real API)
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 500);
 
-    // Simulate loading (remove this if using a real API)
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
+  //   setServices(sampleServices);
+  // }, []);
+  const throttledFetchProjects = useCallback(throttle(fetchServiceData, 60000), [
+    fetchServiceData,
+  ]);
+    useEffect(()=>{
+     const initializeData = async ()=>{
+      setLoading(true)
+      try{
+       const data =  await fetchServiceData();
+        setServices(data);
 
-    setServices(sampleServices);
-  }, []);
+      }
+      catch(error){
+        console.error("Error fetching projects:", error);
+      }
+      finally {
+        setLoading(false);
+      }
+     }
+     initializeData();
+    //  const intervalId = setInterval(throttledFetchProjects, 10000);
+    //  return () => clearInterval(intervalId);
+    },[fetchServiceData]);
 
+    function throttle(func, limit) {
+      let lastFunc;
+      let lastRan;
+  
+      return function (...args) {
+        const context = this;
+        if (!lastRan) {
+          func.apply(context, args);
+          lastRan = Date.now();
+        } else {
+          clearTimeout(lastFunc);
+          lastFunc = setTimeout(
+            () => {
+              if (Date.now() - lastRan >= limit) {
+                func.apply(context, args);
+                lastRan = Date.now();
+              }
+            },
+            limit - (Date.now() - lastRan),
+          );
+        }
+      };
+    }
   useEffect(() => {
     setTotalPages(Math.ceil(services.length / rowsPerPage));
   }, [services, rowsPerPage]);
@@ -205,14 +251,14 @@ const ServicesTable = () => {
                       <td>{service.serviceName}</td>
                       <td>
                         <img
-                          src={service.image}
+                          src={service.serviceImageURL}
                           alt="Service"
                           className="h-[50px] w-[50px] cursor-pointer"
-                          onClick={() => openImageModal(service.image)}
+                          onClick={() => openImageModal(service.serviceImageURL)}
                         />
                       </td>
                       <td>
-                        <p className="line-clamp-6">{service.description}</p>
+                        <p className="line-clamp-6">{service.serviceDescription}</p>
                       </td>
                       <td>
                         <div className="flex gap-2">

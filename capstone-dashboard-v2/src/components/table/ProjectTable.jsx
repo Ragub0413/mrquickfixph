@@ -10,6 +10,7 @@ import {
 } from "react-icons/tb";
 import { Button, Tooltip } from "@material-tailwind/react";
 import Swal from "sweetalert2";
+import { useProjectData } from "../../data/ProjectData";
 
 const ProjectTable = () => {
   const [loading, setLoading] = useState(false);
@@ -20,50 +21,47 @@ const ProjectTable = () => {
   const [viewImageModal, setViewImageModal] = useState(false);
   const [selectedImages, setSelectedImages] = useState([]);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const {fetchProjectData} = useProjectData()
+  // useEffect(() => {
+  //   setLoading(true);
+  //   const sampleProjects = [
+  //     {
+  //       projectName: "Project Sample",
+  //       jobServices: "Fits-outs (Painting, Carpentry, Masonry)",
+  //       thumbnail: "https://via.placeholder.com/500",
+  //       images: [
+  //         "https://via.placeholder.com/150/",
+  //         "https://via.placeholder.com/200/",
+  //         "https://via.placeholder.com/500/",
+  //       ],
+  //     },
+  //   ];
 
-  useEffect(() => {
-    setLoading(true);
-    const sampleProjects = [
-      {
-        projectName: "Project Sample",
-        jobServices: "Fits-outs (Painting, Carpentry, Masonry)",
-        thumbnail: "https://via.placeholder.com/500",
-        images: [
-          "https://via.placeholder.com/150/",
-          "https://via.placeholder.com/200/",
-          "https://via.placeholder.com/500/",
-        ],
-      },
-    ];
+  //   // Simulate loading (remove this if using a real API)
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 500);
 
-    // Simulate loading (remove this if using a real API)
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-
-    setProjects(sampleProjects);
-  }, []);
-
-  // Delete project function
-  const handleDeleteProject = () => {
-    Swal.fire({
-      title: "Are you sure you want to delete this project?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Project has been deleted.",
-          confirmButtonText: "OK",
-          icon: "success",
-        }).then(() => {
-          window.location.reload();
-        });
+  //   setProjects(sampleProjects);
+  // }, []);
+  useEffect(()=>{
+    const initializeData = async () =>{
+      setLoading(true);
+      try{
+        const data = await fetchProjectData();
+        setProjects(data)
       }
-    });
-  };
+      catch(error){
+        console.error("Error fetching projects:", error);
+      }
+      finally {
+        setLoading(false);
+      }
+    }
+    initializeData();
+  },[fetchProjectData])
+  // Delete project function
+ 
 
   useEffect(() => {
     const totalPagesCalculated = Math.ceil(projects.length / rowsPerPage);
@@ -74,6 +72,43 @@ const ProjectTable = () => {
     setSelectedImages(images);
     setCurrentImageIndex(0);
     setViewImageModal(true);
+  };
+  const {removeProjectData} = useProjectData();
+  const handleDeleteProject = (id) => {
+    console.log(id)
+    Swal.fire({
+      title: "You want to delete this project?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Are you sure?",
+          text: "This action cannot be undone!",
+          showCancelButton: true,
+          confirmButtonText: "OK",
+          confirmButtonText: "Yes, delete it!",
+          icon: "warning",
+        }).then(async (finalResult) => {
+          if(finalResult.isConfirmed){
+            try{
+              await removeProjectData(id);
+              setProjects((prev) =>
+              prev.filter((project)=> project._id !== id));
+              Swal.fire(
+                "Deleted!",
+                "project has been deleted.",
+                "success",
+              );
+            } catch (error) {
+              console.error("Failed to delete admin:", error);
+              Swal.fire("Error", "Failed to delete admin account.", "error");
+            }
+          }
+        });
+      }
+    });
   };
 
   const closeImageModal = () => {
@@ -145,23 +180,23 @@ const ProjectTable = () => {
                       >
                         <td>{(currentPage - 1) * rowsPerPage + index + 1}</td>
                         <td>{project.projectName}</td>
-                        <td>{project.jobServices}</td>
+                        <td>{project.projectServices}</td>
                         <td>
                           <img
-                            src={project.thumbnail}
+                            src={project.projectThumbnail}
                             alt="Thumbnail"
                             className="h-[50px] w-[50px] cursor-pointer"
-                            onClick={() => openImageModal([project.thumbnail])}
+                            onClick={() => openImageModal([project.projectThumbnail])}
                           />
                         </td>
                         <td className="flex w-[200px] gap-2 overflow-auto">
-                          {project.images.map((image, idx) => (
+                          {project.projectImagesUrl.map((image, idx) => (
                             <img
                               key={idx}
                               src={image}
                               alt="Project Image"
                               className="h-[50px] w-[50px] cursor-pointer"
-                              onClick={() => openImageModal(project.images)}
+                              onClick={() => openImageModal(project.projectImagesUrl)}
                             />
                           ))}
                         </td>
@@ -177,7 +212,7 @@ const ProjectTable = () => {
                           >
                             <Button
                               className="!bg-red-500 !p-1"
-                              onClick={handleDeleteProject}
+                              onClick={() => handleDeleteProject(project._id)}
                             >
                               <TbTrash className="text-[20px]" />
                             </Button>

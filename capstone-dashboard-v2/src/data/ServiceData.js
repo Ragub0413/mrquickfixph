@@ -45,9 +45,14 @@ export const useServicesData = create((set) => ({
     fetchServiceData: async () => {
         try {
             const res = await axios.get("/api/services/");
-            set({ projects: res.data.data });
+            const fetchedProjects = res.data.data || [];
+            set({ projects: fetchedProjects });
+            return fetchedProjects;
         } catch (error) {
             console.error("Failed to fetch projects:", error);
+          throw new Error(
+            error.response?.data?.message || "An error occurred while fetching services."
+          );
         }
     },
 }));

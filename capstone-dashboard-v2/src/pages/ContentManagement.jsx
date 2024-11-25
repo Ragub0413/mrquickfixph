@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 import TestimonialTable from "../components/table/TestimonialTable";
 
 import { useServicesData } from "../data/ServiceData";
+import { useProjectData } from "../data/ProjectData";
 
 const ContentManagement = () => {
   const [openProject, setOpenProject] = useState(false);
@@ -28,6 +29,9 @@ const ContentManagement = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const [openAddService, setOpenAddService] = useState(false);
   const [imageService, setImageService] = useState(null);
+  const [loading,setLoading] = useState(false)
+  const [AImage,setAImage] = useState([]);
+ 
   const [servicePhoto,setServicePhoto] = useState(null)
   const [newService, setNewService] = useState({ serviceName: "",description:"" });
   const [selectedJobType, setSelectedJobType] = useState("");
@@ -65,15 +69,18 @@ const ContentManagement = () => {
 
   const handleImageUpload = (e) => {
     const files = Array.from(e.target.files);
+    
     const newImages = files.map((file) => URL.createObjectURL(file));
     setImages((prevImages) => [...prevImages, ...newImages]);
+    setAImage(files)
   };
 
   const removeImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
+ const {UploadProject} = useProjectData();
 
-  const handleUploadProject = () => {
+  const handleUploadProject = async() => {
     if (
       !newProject.projectName ||
       selectedOptions.length === 0 ||
@@ -89,22 +96,51 @@ const ContentManagement = () => {
       return;
     }
 
-    console.log("Uploading Project with the following data:");
-    console.log("Project Name:", newProject.projectName);
-    console.log("Selected Services:", selectedOptions);
-    console.log("Thumbnail:", thumbnail);
-    console.log("Images:", images);
+    // console.log("Uploading Project with the following data:");
+    // console.log("Project Name:", newProject.projectName);
+    // console.log("Selected Services:", selectedOptions);
+     //console.log("Thumbnail:", thumbnail);
+    // console.log("Images:", images);
 
-    Swal.fire({
-      title: "Success",
-      text: "Project uploaded successfully",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.reload();
-      }
-    });
+
+    const newProjectUpload = new FormData();
+    newProjectUpload.append("projectName",newProject.projectName)
+    newProjectUpload.append("projectThumbnail",thumbnail)
+    for(let service=0; service < selectedOptions.length; service++){
+      newProjectUpload.append("projectServices",selectedOptions[service])
+    }
+    for(let image=0; image < AImage.length; image++){
+      newProjectUpload.append("projectImage",AImage[image])
+    }
+
+    // for(let all of newProjectUpload.values()){
+    //   console.log(all)
+    // }
+    const {success,message} = await UploadProject(newProjectUpload);
+    if (!success) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+      });
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: message,
+      });
+      onClose();
+    }
+    // Swal.fire({
+    //   title: "Success",
+    //   text: "Project uploaded successfully",
+    //   icon: "success",
+    //   confirmButtonText: "OK",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //    /// window.location.reload();
+    //   }
+    // });
   };
 
   const handleServiceClose = () => {
@@ -126,6 +162,8 @@ const ContentManagement = () => {
    
       return;
     }
+    setLoading(true);
+
     const newServices = new FormData();
     newServices.append("serviceName",newService.serviceName)
     newServices.append("typeofJob",selectedJobType)
@@ -134,7 +172,8 @@ const ContentManagement = () => {
     // for(let value of newServices.values()){
     //   console.log(value)
     // }
-    const {success, message} = await AddProject(newServices)
+    const {success, message} = await AddProject(newServices);
+    setLoading(false)
     // Swal.fire({
     //   title: "Success",
     //   text: "Service added successfully",
@@ -157,6 +196,7 @@ const ContentManagement = () => {
         title: "Success",
         text: message,
       });
+      onClose();
     }
   };
 
@@ -248,7 +288,9 @@ const ContentManagement = () => {
                     />
                     <button
                       className="absolute right-0 top-0 m-1 rounded-full bg-black/20 p-1 text-red-500 hover:bg-red-500 hover:text-white"
-                      onClick={() => setThumbnail(null)}
+                      onClick={() => {
+                        setThumbnail(null)
+                      }}
                     >
                       <TbX />
                     </button>
@@ -263,7 +305,12 @@ const ContentManagement = () => {
                       onChange={(e) => {
                         const file = e.target.files[0];
                         if (file) {
-                          setThumbnail(URL.createObjectURL(file));
+                          const reader = new FileReader();
+                          reader.onload = ()=>{
+                            setThumbnail(reader.result);
+                          }
+                          reader.readAsDataURL(file)
+                          // setThumbnail(URL.createObjectURL(file));
                         }
                       }}
                       className="hidden"

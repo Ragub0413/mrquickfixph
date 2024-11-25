@@ -171,8 +171,51 @@ export const updateJobOrder = async (req, res) => {
 
         if (job.jobStatus === "cancelled") {
             updateFields.jobCancelledDate = new Date();
+            const mailSent = await sendEmail(
+                job.clientEmail,
+                "Mr. Quick Fix Project",
+                `<!DOCTYPE html>
+                    <html lang="en" >
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Mr. Quick Fix PH Project</title>
+    
+    
+                    </head>
+                    <body>
+                    <!-- partial:index.partial.html -->
+                    <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                        <div style="margin:50px auto;width:70%;padding:20px 0">
+                        <div style="border-bottom:1px solid #eee">
+                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
+                        </div>
+                        <p style="font-size:1.1em">Hi Mr./Ms. ${job.clientLastName},</p>
+                       <p>We are writing to inform you that your transaction with us has been cancelled.
+                       </p>
+                       <p><b>Reason for Cancellation:</b> ${job.jobCancellationReason}</p>
+                       <p>
+                       If you believe this cancellation was made in error, please contact our customer service at [Business Phone] or message us on our Facebook page: [Facebook Page].
+                       </p>
+                       <p>We sincerely apologize for any inconvenience this may have caused and appreciate your understanding.
+                        </p
+                        <p style="font-size:0.9em;">Warm Regards,<br />Mr. Quick Fix</p>
+                        <hr style="border:none;border-top:1px solid #eee" />
+                        <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                            <p>Mr Quick Fix PH</p>
+                            <p>Philippines</p>
+                        </div>
+                        </div>
+                    </div>
+                    <!-- partial -->
+    
+                    </body>
+                    </html>`,
+                // {
+                //     filename: `Quotation.pdf`,
+                //     path: data.url
+                // }
+            )
 
-            
         }
 
         if (job.jobStatus === "completed") {
