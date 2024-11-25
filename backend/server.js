@@ -32,8 +32,14 @@ app.use(cors(corsOptions));
 app.use(cookieParser());
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.send("Server is running");
+// app.get("/", (req, res) => {
+//   res.send("Server is running");
+// });
+app.get('/', (req, res) => {
+  let date = new Date();
+  date = date.toDateString()
+   res.send(date+"");
+  
 });
 
 app.use("/api/job-orders", jobOrderRoutes);

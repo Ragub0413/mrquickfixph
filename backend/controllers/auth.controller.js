@@ -39,8 +39,47 @@ export const signup = async (req, res) => {
       }
   
       // Send OTP Email
-      const emailContent = `Your OTP for verification is: ${otp}`;
-      await sendEmail(email, 'Verify your email', emailContent);
+      // const emailContent = `Your OTP for verification is: ${otp}`;
+      // await sendEmail(email, 'Verify your email', emailContent);
+      const mailSent = await sendEmail(
+        email,
+        "Verify your email",
+        `<!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <title>Mr. Quick Fix</title>
+            
+        
+        </head>
+        <body>
+        <!-- partial:index.partial.html -->
+        <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+            <div style="margin:50px auto;width:70%;padding:20px 0">
+            <div style="border-bottom:1px solid #eee">
+                <a href="" style="font-size:1.4em;color: #FB4700;text-decoration:none;font-weight:600">Mr Quick </a>
+            </div>
+              <p style="font-size:1.1em;margin: 0 auto;width: max-content;">Hi,</p>
+          <p style="margin: 0 auto;width: max-content;"> Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes </p>
+            <h2 style="background:#FB4700;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${otp}</h2>
+          
+            <p style="font-size:0.9em;">Regards,<br />Mr. Quick Fix</p>
+            <hr style="border:none;border-top:1px solid #eee" />
+            <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                <p>Mr Quick Fix PH</p>
+                <p>Philippines</p>
+            </div>
+            </div>
+        </div>
+        <!-- partial -->
+            
+        </body>
+        </html>`,
+        // {
+        //     filename: `Quotation.pdf`,
+        //     path: data.url
+        // }
+    )
   
       res.status(201).json({ message: 'User created or OTP resent, OTP sent!' });
     } catch (error) {
@@ -98,8 +137,47 @@ export const resendOTP = async (req, res) => {
     user.otp = { code: newOTP, expiry: newExpiry };
     await user.save();
 
-    const emailContent = `Your new OTP is: ${newOTP}`;
-    await sendEmail(email, 'New OTP Request', emailContent);
+    // const emailContent = `Your new OTP is: ${newOTP}`;
+    // await sendEmail(email, 'New OTP Request', emailContent);
+    const mailSent = await sendEmail(
+      email,
+      "New OTP Request",
+      `<!DOCTYPE html>
+      <html lang="en">
+      <head>
+          <meta charset="UTF-8">
+          <title>Mr. Quick Fix</title>
+          
+      
+      </head>
+      <body>
+      <!-- partial:index.partial.html -->
+      <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+          <div style="margin:50px auto;width:70%;padding:20px 0">
+          <div style="border-bottom:1px solid #eee">
+              <a href="" style="font-size:1.4em;color: #FB4700;text-decoration:none;font-weight:600">Mr Quick </a>
+          </div>
+          <p style="font-size:1.1em;margin: 0 auto;width: max-content;">Hi,</p>
+          <p style="margin: 0 auto;width: max-content;"> Use the following OTP to complete your Sign Up procedures. OTP is valid for 5 minutes </p>
+          <h2 style="background:#FB4700;margin: 0 auto;width: max-content;padding: 0 10px;color: #fff;border-radius: 4px;">${newOTP}</h2>
+        
+          <p style="font-size:0.9em;">Regards,<br />Mr. Quick Fix</p>
+          <hr style="border:none;border-top:1px solid #eee" />
+          <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+              <p>Mr Quick Fix PH</p>
+              <p>Philippines</p>
+          </div>
+          </div>
+      </div>
+      <!-- partial -->
+          
+      </body>
+      </html>`,
+      // {
+      //     filename: `Quotation.pdf`,
+      //     path: data.url
+      // }
+  )
 
     res.json({ message: 'New OTP sent!' });
   } catch (error) {

@@ -100,6 +100,9 @@ export const editServicewImage = async(req,res)=>{
     const serviceIDfind = await Services.find({_id:id});
     if(!serviceIDfind) return res.status(404).json({ success: false, message: "Service not found" });
     const data = await upload_JobQuotation_File_Single(buffer);
+    if(serviceIDfind.serviceImagePublic_ID){
+        
+    }
     const updateServiceData ={
         ...service,
         serviceImageURL: data.url,

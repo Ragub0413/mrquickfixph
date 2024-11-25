@@ -34,7 +34,38 @@ export const addJobOrder = async (req, res) => {
             const mailSent = await sendEmail(
                 job.clientEmail,
                 "Mr. Quick Fix Inquiry",
-                InquiryTemplate
+                `<!DOCTYPE html>
+                <html lang="en" >
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Mr. Quick Fix PH Project</title>
+
+
+                </head>
+                <body>
+                <!-- partial:index.partial.html -->
+                <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                    <div style="margin:50px auto;width:70%;padding:20px 0">
+                    <div style="border-bottom:1px solid #eee">
+                        <a href="" style="font-size:1.4em;color:#FB4700;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
+                    </div>
+                    <p style="font-size:1.1em">Hi Mr./Ms. ${job.clientLastName},</p>
+                   <p>This email is to confirm that we have received your inquiry submitted through our website,<a href=${process.env.FRONTEND_WEBSITE}> Mr. Quick Site </a>. Please be advised that we will use the phone number you provided to contact you for further details and information regarding your inquiry.
+                   </p>
+                   <p>
+                   Thank you for trusting Mr. Quick Fix! </p>
+                    <p style="font-size:0.9em;">Warm Regards,<br />Mr. Quick Fix</p>
+                    <hr style="border:none;border-top:1px solid #eee" />
+                    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                        <p>Mr Quick Fix PH</p>
+                        <p>Philippines</p>
+                    </div>
+                    </div>
+                </div>
+                <!-- partial -->
+
+                </body>
+                </html>`
             )
         } else if (job.createdBy && !mongoose.Types.ObjectId.isValid(job.createdBy)) {
             return res.status(400).json({ success: false, message: "Invalid createdBy ID" });
@@ -45,7 +76,8 @@ export const addJobOrder = async (req, res) => {
 
         const newJob = new JobOrder(job);
 
-
+        const datestart  = new Date(job.jobStartDate).toDateString();
+        const dateEnd  = new Date(job.jobEndDate).toDateString()
         const mailSent = await sendEmail(
             job.clientEmail,
             "Mr. Quick Fix Project",
@@ -62,17 +94,14 @@ export const addJobOrder = async (req, res) => {
                 <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                     <div style="margin:50px auto;width:70%;padding:20px 0">
                     <div style="border-bottom:1px solid #eee">
-                        <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
+                        <a href="" style="font-size:1.4em;color: #FB4700;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
                     </div>
                     <p style="font-size:1.1em">Hi Mr./Ms. ${job.clientLastName},</p>
-                   <p>I hope this email finds you well, <br/>
-                   This email is to inform you that we received your inquiry, please be advice that one of our staff will contact you for other details and information regarding your inquiry.
-                        The information you submitted with us will remain secure and use to contact you as the project is still ongoing. <br/>
-                        We already attached the Quotation File for the project. This file will serves as your copy of the Quotation File
+                   <p>This is to inform you that your job order is currently in progress. The project started on <b>${datestart}</b> and is expected to be completed by <b>${dateEnd}</b>.
                    </p>
+                   <p>Please find the attached quotation file for your reference.</p>
                    <p>
-                   Thank you for trusting Mr. Quick Fix! <br/>
-	                We hope that you will enjoy working with us and a good outcome.   
+                   If you have any questions or need to reschedule the job order or discuss the quotation, please do not hesitate to reach out.
                    </p>
                     <p style="font-size:0.9em;">Warm Regards,<br />Mr. Quick Fix</p>
                     <hr style="border:none;border-top:1px solid #eee" />
@@ -122,10 +151,47 @@ export const addJobOrderNoFileUpload = async (req, res) => {
         } else if (job.createdBy && !mongoose.Types.ObjectId.isValid(job.createdBy)) {
             return res.status(400).json({ success: false, message: "Invalid createdBy ID" });
         }
-
+        const inspectionDate = new Date(job.jobInspectionDate).toDateString();
         const newJob = new JobOrder(job);
         await newJob.save();
-      
+        const mailSent = await sendEmail(
+            job.clientEmail,
+            "Mr. Quick Fix Project",
+            `<!DOCTYPE html>
+                <html lang="en" >
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Mr. Quick Fix PH Project</title>
+
+
+                </head>
+                <body>
+                <!-- partial:index.partial.html -->
+                <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                    <div style="margin:50px auto;width:70%;padding:20px 0">
+                    <div style="border-bottom:1px solid #eee">
+                        <a href="" style="font-size:1.4em;color: #FB4700;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
+                    </div>
+                    <p style="font-size:1.1em">Hi Mr./Ms. ${job.clientLastName},</p>
+                   <p>I hope this email finds you well.</p>
+                   <p>I would like to inform you that we have successfully arranged an schedule for your ocular inspection. Kindly find the scheduled details below:<p/>
+                   <p><b> Ocular Inspection Schedule</b></p>
+                   <p><b>Date: </b>${inspectionDate}</p>
+                   <p>If you have any questions or need to reschedule, please do not hesitate to reach out.</p>
+                   
+                    <p style="font-size:0.9em;">Warm Regards,<br />Mr. Quick Fix</p>
+                    <hr style="border:none;border-top:1px solid #eee" />
+                    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                        <p>Mr Quick Fix PH</p>
+                        <p>Philippines</p>
+                    </div>
+                    </div>
+                </div>
+                <!-- partial -->
+
+                </body>
+                </html>`
+        )
   
         res.status(201).json({ success: true, data: newJob });
     } catch (error) {
@@ -187,7 +253,7 @@ export const updateJobOrder = async (req, res) => {
                     <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
                         <div style="margin:50px auto;width:70%;padding:20px 0">
                         <div style="border-bottom:1px solid #eee">
-                            <a href="" style="font-size:1.4em;color: #00466a;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
+                            <a href="" style="font-size:1.4em;color: #FB4700;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
                         </div>
                         <p style="font-size:1.1em">Hi Mr./Ms. ${job.clientLastName},</p>
                        <p>We are writing to inform you that your transaction with us has been cancelled.
@@ -217,10 +283,52 @@ export const updateJobOrder = async (req, res) => {
             )
 
         }
-
+        const link =`${process.env.FRONTEND_URL}/feedback/${id}`
         if (job.jobStatus === "completed") {
             updateFields.jobCompletedDate = new Date();
-
+            const mailSent = await sendEmail(
+                job.clientEmail,
+                "Mr. Quick Fix Transaction Completed",
+                `<!DOCTYPE html>
+                <html lang="en">
+                <head>
+                    <meta charset="UTF-8">
+                    <title>Mr. Quick Fix</title>
+                    
+                
+                </head>
+                <body>
+                <!-- partial:index.partial.html -->
+                <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                    <div style="margin:50px auto;width:70%;padding:20px 0">
+                    <div style="border-bottom:1px solid #eee">
+                        <a href="" style="font-size:1.4em;color: #FB4700;text-decoration:none;font-weight:600">Mr Quick </a>
+                    </div>
+                    <p style="font-size:1.1em">Hi Mr./Ms. ${job.clientLastName},</p>
+                    <p>This email confirms that your recent transaction with Mr. Quick Fix has been successfully completed.</p>
+                    <p>Hoping for another transaction with you! </p>
+                   
+                    <p>We would love to hear your thoughts. Please take a moment to share your feedback by 
+                    <a href=${link}>Clicking this link</a></p>
+                    <p>Your input is highly valued, and we look forward to the opportunity of working with you again in the future.</p>
+                    <p>Thank you for choosing Mr. Quick Fix.</p>
+                    <p style="font-size:0.9em;">Warm Regards,<br />Mr. Quick Fix</p>
+                    <hr style="border:none;border-top:1px solid #eee" />
+                    <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                        <p>Mr Quick Fix PH</p>
+                        <p>Philippines</p>
+                    </div>
+                    </div>
+                </div>
+                <!-- partial -->
+                    
+                </body>
+                </html>`,
+                // {
+                //     filename: `Quotation.pdf`,
+                //     path: data.url
+                // }
+            )
 
         }
 

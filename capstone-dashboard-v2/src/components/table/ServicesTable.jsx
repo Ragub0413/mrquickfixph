@@ -147,6 +147,8 @@ const ServicesTable = () => {
     setJobType(service.jobType);
     setDescription(service.description);
     setImageService(service.image);
+   // console.log(editService);
+    console.log(service)
   };
 
   const handleCloseEditService = () => {
@@ -354,9 +356,9 @@ const ServicesTable = () => {
                 value={jobType}
                 onChange={setJobType}
               >
-                <Option value="Repairs">Repairs</Option>
+               <Option value="Repairs">Repairs</Option>
                 <Option value="Renovation">Renovation</Option>
-                <Option value="PMS">
+                <Option value="Preventive Maintenance Service (PMS)">
                   Preventive Maintenance Service (PMS)
                 </Option>
                 <Option value="Cleaning Services">Cleaning Services</Option>
