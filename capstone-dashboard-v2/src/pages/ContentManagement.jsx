@@ -15,6 +15,8 @@ import { List, ListItem, Checkbox, Typography } from "@material-tailwind/react";
 import Swal from "sweetalert2";
 import TestimonialTable from "../components/table/TestimonialTable";
 
+import { useServicesData } from "../data/ServiceData";
+
 const ContentManagement = () => {
   const [openProject, setOpenProject] = useState(false);
   const [newProject, setNewProject] = useState({
@@ -26,7 +28,9 @@ const ContentManagement = () => {
   const [thumbnail, setThumbnail] = useState(null);
   const [openAddService, setOpenAddService] = useState(false);
   const [imageService, setImageService] = useState(null);
-  const [newService, setNewService] = useState({ serviceName: "" });
+  const [servicePhoto,setServicePhoto] = useState(null)
+  const [newService, setNewService] = useState({ serviceName: "",description:"" });
+  const [selectedJobType, setSelectedJobType] = useState("");
 
   useEffect(() => {
     document.title = "Mr. Quick Fix | Content Management";
@@ -109,7 +113,9 @@ const ContentManagement = () => {
     setImageService(null);
   };
 
-  const handleAddService = () => {
+  const {AddProject,fetchServiceData } = useServicesData();
+
+  const handleAddService = async () => {
     if (!newService.serviceName || !imageService) {
       Swal.fire({
         title: "Error",
@@ -117,23 +123,41 @@ const ContentManagement = () => {
         icon: "error",
         confirmButtonText: "OK",
       });
+   
       return;
     }
-
-    console.log("Adding Service with the following data:");
-    console.log("Service Name:", newService.serviceName);
-    console.log("Service Image:", imageService);
-
-    Swal.fire({
-      title: "Success",
-      text: "Service added successfully",
-      icon: "success",
-      confirmButtonText: "OK",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        window.location.reload();
-      }
-    });
+    const newServices = new FormData();
+    newServices.append("serviceName",newService.serviceName)
+    newServices.append("typeofJob",selectedJobType)
+    newServices.append("serviceImage",servicePhoto)
+    newServices.append("serviceDescription",newService.description)
+    // for(let value of newServices.values()){
+    //   console.log(value)
+    // }
+    const {success, message} = await AddProject(newServices)
+    // Swal.fire({
+    //   title: "Success",
+    //   text: "Service added successfully",
+    //   icon: "success",
+    //   confirmButtonText: "OK",
+    // }).then((result) => {
+    //   if (result.isConfirmed) {
+    //    window.location.reload();
+    //   }
+    // });
+    if (!success) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+      });
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: message,
+      });
+    }
   };
 
   return (
@@ -317,11 +341,17 @@ const ContentManagement = () => {
                 }
               />
               {/* Choose Job Type to add the service */}
-              <Select label="Choose Job Type">
-                <Option>Repairs</Option>
-                <Option>Renovation</Option>
-                <Option>Preventive Maintenance Service (PMS)</Option>
-                <Option>Cleaning Services</Option>
+              <Select
+                label="Choose Job Type"
+                value={selectedJobType}
+                onChange={setSelectedJobType}
+              >
+                <Option value="Repairs">Repairs</Option>
+                <Option value="Renovation">Renovation</Option>
+                <Option value="Preventive Maintenance Service (PMS)">
+                  Preventive Maintenance Service (PMS)
+                </Option>
+                <Option value="Cleaning Services">Cleaning Services</Option>
               </Select>
               <label className="text-sm">Upload Image:</label>
               <div className="flex items-center gap-4">
@@ -350,6 +380,7 @@ const ContentManagement = () => {
                         const file = e.target.files[0];
                         if (file) {
                           setImageService(URL.createObjectURL(file));
+                          setServicePhoto(file)
                         }
                       }}
                       className="hidden"

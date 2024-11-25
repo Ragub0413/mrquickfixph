@@ -5,6 +5,7 @@ import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db.js";
 import authRoutes from "./router/auth.router.js";
 import jobOrderRoutes from "./router/joborder.route.js";
+import serviceRoute from "./router/services.router.js";
 
 
 dotenv.config();
@@ -36,6 +37,7 @@ app.get("/", (req, res) => {
 
 app.use("/api/job-orders", jobOrderRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/services",serviceRoute);
 
 app.listen(PORT, () => {
     connectDB();

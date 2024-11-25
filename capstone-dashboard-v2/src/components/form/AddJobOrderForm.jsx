@@ -121,7 +121,10 @@ const AddJobOrderForm = ({ onClose, adminId }) => {
     newJob.append("clientEmail", newJobOrder.clientEmail)
     newJob.append("clientPhone", newJobOrder.clientPhone)
     newJob.append("jobType", newJobOrder.jobType)
-    newJob.append("jobServices", newJobOrder.jobServices)
+    for(let i=0; i < newJobOrder.jobServices.length; i++){
+      newJob.append("jobServices", newJobOrder.jobServices[i])
+    }
+    // newJob.append("jobServices", newJobOrder.jobServices)
     newJob.append("jobQuotation", newJobOrder.jobQuotation)
     newJob.append("jobStartDate", newJobOrder.jobStartDate)
     newJob.append("jobEndDate", newJobOrder.jobEndDate)
@@ -142,12 +145,17 @@ const AddJobOrderForm = ({ onClose, adminId }) => {
      status.message = message;
      status.success = success
      setLoading(false);
+    // console.log(newJobOrder);
+    // setLoading(false);
 
     } 
     else{
       const {success,message} = await createProject(newJob);
      status.message = message;
      status.success = success
+    // for(const value of newJob.values()){
+    //     console.log(value)
+    //   }
      setLoading(false)
     }
   

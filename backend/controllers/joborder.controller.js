@@ -171,6 +171,8 @@ export const updateJobOrder = async (req, res) => {
 
         if (job.jobStatus === "cancelled") {
             updateFields.jobCancelledDate = new Date();
+
+            
         }
 
         if (job.jobStatus === "completed") {

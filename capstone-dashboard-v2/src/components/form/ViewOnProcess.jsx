@@ -146,20 +146,7 @@ const ViewOnProcess = ({ jobOrder, onClose }) => {
     if (result.isConfirmed) {
       try {
         setLoading(true);
-        // if(updatedProject.jobQuotation !== File){
-        //   const { success, message } = await updateJobOrder(
-        //     updatedProject._id,
-        //     updatedProject,
-        //   );
-        //   status.success = success;
-        //   status.message = message;
-        //   setLoading(false);
-        // }
-        // else{
-        //   console.log("update also the quotation")
-        //   console.log(updatedProject.jobQuotation)
-        //   setLoading(false);
-        // }
+        
         if(!isValidURL(updatedProject.jobQuotation)){
           const updateData = new FormData();
           updateData.append("jobQuotation",updatedProject.jobQuotation)
@@ -172,11 +159,11 @@ const ViewOnProcess = ({ jobOrder, onClose }) => {
           updateData.append("clientLastName",updatedProject.clientLastName)
           updateData.append("clientAddress",updatedProject.clientAddress)
           updateData.append("jobType",updatedProject.jobType)
-          updateData.append("jobServices",updatedProject.jobServices)
+          for(let i=0; i < updateData.jobServices.length; i++){
+            newJob.append("jobServices", updateData.jobServices[i])
+          }
       
-           for(let value of updateData.values()){
-            console.log(value)
-           }
+           
            const { success, message } = await updateJobOrderAddQuotation(
             updatedProject._id,
             updateData,

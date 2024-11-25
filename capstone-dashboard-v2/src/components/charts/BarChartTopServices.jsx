@@ -36,6 +36,7 @@ const BarChartTopServices = ({ projects = [] }) => {
     .forEach((project) => {
       if (
         project.jobStatus !== "cancelled" &&
+        project.originalStatus !== "cancelled" &&
         project.jobServices &&
         Array.isArray(project.jobServices)
       ) {
