@@ -121,43 +121,58 @@ const ServicesTable = () => {
     setViewImageModal(false);
   };
 
-  const handleDeleteService = (index) => {
+  const {removeServiceData,updateTextService,updateImageService} = useServicesData();
+
+  const handleDeleteService = (id) => {
     Swal.fire({
-      title: "Are you sure you want to delete this service?",
+      title: "You want to delete this service?",
       icon: "warning",
       showCancelButton: true,
-      confirmButtonText: "Yes, delete it!",
+      confirmButtonText: "Yes",
     }).then((result) => {
       if (result.isConfirmed) {
         Swal.fire({
-          title: "Deleted!",
-          text: "Service has been deleted.",
+          title: "Are you sure?",
+          text: "This action cannot be undone!",
+          showCancelButton: true,
           confirmButtonText: "OK",
-          icon: "success",
-        }).then(() => {
-          window.location.reload();
+          confirmButtonText: "Yes, delete it!",
+          icon: "warning",
+        }).then(async (finalResult) => {
+          if(finalResult.isConfirmed){
+            try{
+              await removeServiceData(id);
+              setServices((prev) =>
+              prev.filter((service)=> service._id !== id));
+              Swal.fire(
+                "Deleted!",
+                "Service has been deleted.",
+                "success",
+              );
+            } catch (error) {
+              console.error("Failed to delete service:", error);
+              Swal.fire("Error", "Failed to delete service.", "error");
+            }
+          }
         });
       }
     });
   };
-
   const handleEditService = (service) => {
     setEditService(service);
     setServiceName(service.serviceName);
-    setJobType(service.jobType);
-    setDescription(service.description);
-    setImageService(service.image);
-   // console.log(editService);
-    console.log(service)
+    setJobType(service.typeofJob);
+    setDescription(service.serviceDescription);
+    setImageService(service.serviceImageURL);
   };
-
+ 
   const handleCloseEditService = () => {
     setEditService(null);
     setServiceName("");
     setImageService(null);
   };
-
-  const handleUpdateService = () => {
+ 
+  const handleUpdateService = async () => {
     if (!serviceName || !jobType || !description || !imageService) {
       Swal.fire({
         icon: "error",
@@ -167,44 +182,73 @@ const ServicesTable = () => {
       });
       return;
     }
-
-    const updatedServices = services.map((service) => {
-      if (service.id === editService.id) {
-        return {
-          ...service,
-          serviceName,
-          jobType,
-          description,
-          image: imageService,
-        };
-      }
-      return service;
-    });
-
-    setServices(updatedServices);
-    setEditService(null);
-    setServiceName("");
-    setImageService(null);
-
+ 
+    const updatedData = {
+      serviceName,
+      typeofJob: jobType,
+      serviceDescription: description,
+      serviceImageURL: imageService,
+    };
+ 
     Swal.fire({
       title: "Are you sure you want to update this service?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, update it!",
-    }).then((result) => {
+    }).then(async (result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Updated!",
-          text: "Service has been updated.",
-          confirmButtonText: "OK",
-          icon: "success",
-        }).then(() => {
-          window.location.reload();
-        });
+        try {
+          setLoading(true);
+ 
+          const textResponse = await updateTextService(
+            editService._id,
+            updatedData,
+          );
+ 
+          if (imageService instanceof File) {
+            await updateImageService(editService._id, imageService);
+          }
+ 
+          setServices((prevState) =>
+            prevState.map((service) =>
+              service._id === editService._id
+                ? { ...service, ...updatedData }
+                : service,
+            ),
+          );
+ 
+          setServices((prevState) =>
+            prevState.map((service) =>
+              service._id === editService._id
+                ? { ...service, serviceImageURL: imageService }
+                : service,
+            ),
+          );
+ 
+          setEditService(null);
+          setServiceName("");
+          setImageService(null);
+ 
+          Swal.fire({
+            title: "Updated!",
+            text: textResponse.message,
+            confirmButtonText: "OK",
+            icon: "success",
+          });
+        } catch (error) {
+          console.error("Update failed:", error);
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: "Failed to update service",
+            confirmButtonText: "OK",
+          });
+        } finally {
+          setLoading(false);
+        }
       }
     });
   };
-
   return (
     <>
       <div className="border border-secondary-200">
@@ -291,7 +335,7 @@ const ServicesTable = () => {
                           >
                             <Button
                               className="!bg-red-500 !p-1"
-                              onClick={handleDeleteService}
+                              onClick={()=>handleDeleteService(service._id)}
                             >
                               <TbTrash className="text-[20px]" />
                             </Button>

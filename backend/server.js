@@ -6,7 +6,8 @@ import { connectDB } from "./config/db.js";
 import authRoutes from "./router/auth.router.js";
 import jobOrderRoutes from "./router/joborder.route.js";
 import serviceRoute from "./router/services.router.js";
-import projectRoute from "./router/project.router.js"
+import projectRoute from "./router/project.router.js";
+import testimonialRoute from "./router/testimonial.router.js";
 
 
 dotenv.config();
@@ -46,6 +47,7 @@ app.use("/api/job-orders", jobOrderRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/services",serviceRoute);
 app.use("/api/projects", projectRoute);
+app.use("/api/testimonial", testimonialRoute);
 
 app.listen(PORT, () => {
     connectDB();

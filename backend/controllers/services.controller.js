@@ -66,7 +66,7 @@ export const removeService = async(req,res)=>{
 }
 //update only text variables
 export const editService = async(req,res)=>{
-    const {id} = params;
+    const {id} = req.params;
     const service = req.body;
     if (!mongoose.Types.ObjectId.isValid(id)) {
         return res.status(404).json({ success: false, message: "Service not found" });
@@ -101,7 +101,7 @@ export const editServicewImage = async(req,res)=>{
     if(!serviceIDfind) return res.status(404).json({ success: false, message: "Service not found" });
     const data = await upload_JobQuotation_File_Single(buffer);
     if(serviceIDfind.serviceImagePublic_ID){
-        
+
     }
     const updateServiceData ={
         ...service,

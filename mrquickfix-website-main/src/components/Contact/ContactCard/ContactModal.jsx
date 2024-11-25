@@ -118,7 +118,7 @@ const ContactModal = ({ isOpen, onClose }) => {
         inquiryStatus: "pending",
       };
 
-      const response = await fetch("http://localhost:5000/api/job-orders", {
+      const response = await fetch("http://localhost:5000/api/job-orders/savenofile", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

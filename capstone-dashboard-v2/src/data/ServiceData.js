@@ -55,4 +55,58 @@ export const useServicesData = create((set) => ({
           );
         }
     },
+    removeServiceData: async(id)=>{
+        try{
+             await axios.delete(`/api/services/removeservice/${id}`);
+             set((state)=>({
+                projects: state.projects.filter((project) => project._id !== id),
+                
+             }))
+        //     set((state)=>state.projects.filter((project) => project._id !== id),
+        // );
+        }
+        catch(error){
+            set({
+                error: error.response?.data?.message || error.message,
+                // loading: false,
+              });
+              throw new Error(
+            error.response?.data?.message || "An error occurred while deleting projects.")
+        }
+    },
+    updateTextService: async (serviceId, updatedData) => {
+        try {
+            const res = await axios.patch(`/api/services/update-text/${serviceId}`, updatedData);
+            set((state) => ({
+                projects: state.projects.map((service) =>
+                    service.id === serviceId ? res.data.data : service
+                ),
+            }));
+            return { success: true, message: "Service updated successfully" };
+        } catch (error) {
+            console.error("Error updating service text:", error.response?.data?.message || error.message);
+            return { success: false, message: "Failed to update service" };
+        }
+    },
+    updateImageService: async (serviceId, imageFile) => {
+        const formData = new FormData();
+        formData.append("serviceImage", imageFile);
+ 
+        try {
+            const res = await axios.patch(`/api/services/update-image/${serviceId}`, formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            });
+            set((state) => ({
+                projects: state.projects.map((service) =>
+                    service.id === serviceId ? res.data.data : service
+                ),
+            }));
+            return { success: true, message: "Service image updated successfully" };
+        } catch (error) {
+            console.error("Error updating service image:", error.response?.data?.message || error.message);
+            return { success: false, message: "Failed to update service image" };
+        }
+    },
 }));

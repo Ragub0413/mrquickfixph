@@ -1,14 +1,21 @@
 import React, { useState } from "react";
 import { Title } from "../props/Title";
+import { useParams } from "react-router-dom";
 import Logo from "../../assets/Mr.QuickFixLogo.webp";
 import Swal from "sweetalert2";
 import { Button } from "@material-tailwind/react";
+import { useTestimonialData } from "../../data/TestimonialData";
 
 const TestimonialForm = () => {
-  const [testimonialMessage, setTestimonialMessage] = useState("");
-
-  const handleSubmitFeedback = () => {
-    if (!testimonialMessage) {
+  const [data,setData] = useState({
+    feedbackMessage:""
+  })
+  //const [feedbackMessage, setTestimonialMessage] = useState("");
+  const [loading,setLoading] = useState(false);
+  const params = useParams();
+const {createTestimonial} = useTestimonialData();
+  const handleSubmitFeedback = async () => {
+    if (!data.feedbackMessage) {
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -18,15 +25,35 @@ const TestimonialForm = () => {
       });
       return;
     }
-    Swal.fire({
-      icon: "success",
-      title: "Success",
-      text: "Thank you for your feedback! We appreciate it.",
-      showConfirmButton: true,
-      confirmButtonText: "OK",
-    }).then(() => {
-      window.location.href = "/"; // Redirect to the home page of website
-    });
+
+    setLoading(true)
+    const id = params.id;
+    const {success,message}= await createTestimonial(id,data);
+    console.log(data.feedbackMessage)
+    setLoading(false)
+    if (!success) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: message,
+      });
+    } else {
+      Swal.fire({
+        icon: "success",
+        title: "Success",
+        text: message,
+      });
+    //  onClose();
+    }
+    // Swal.fire({
+    //   icon: "success",
+    //   title: "Success",
+    //   text: "Thank you for your feedback! We appreciate it.",
+    //   showConfirmButton: true,
+    //   confirmButtonText: "OK",
+    // }).then(() => {
+    //  // window.location.href = "/"; // Redirect to the home page of website
+    // });
   };
 
   return (
@@ -49,8 +76,8 @@ const TestimonialForm = () => {
         </p>
         <div className="mt-6 flex flex-col gap-4">
           <textarea
-            value={testimonialMessage}
-            onChange={(e) => setTestimonialMessage(e.target.value)}
+            value={data.feedbackMessage}
+            onChange={(e) => setData({feedbackMessage: e.target.value})}
             placeholder="Write your feedback here..."
             className="h-[150px] w-full resize-none rounded-lg border border-gray-300 p-4 text-sm text-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
           ></textarea>

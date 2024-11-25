@@ -1,36 +1,31 @@
 import React, { useEffect, useState } from "react";
 import { FaAngleUp } from "react-icons/fa6";
-
+ 
 // AOS
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { Link } from "react-router-dom";
-import ContactModal from "../Contact/ContactCard/ContactModal";
-
-const ServiceCard = ({ servicedata }) => {
-  const { image, title, description } = servicedata;
-
+ 
+const ServiceCard = ({ service }) => {
+  const { serviceImageURL, serviceName, serviceDescription } = service;
+ 
   useEffect(() => {
     AOS.init({
       duration: 1000,
       once: true,
     });
   }, []);
-
+ 
   const [isHovered, setIsHovered] = useState(false);
   const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+ 
   const handleClick = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
+ 
   return (
     <div
-      className="group relative cursor-default p-2"
+      className="group relative cursor-pointer p-2"
       onMouseLeave={() => {
         setIsDescriptionVisible(false);
         setIsHovered(false);
@@ -42,22 +37,25 @@ const ServiceCard = ({ servicedata }) => {
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
+        {/* Image */}
         <img
-          src={image}
-          alt={title}
+          src={serviceImageURL}
+          alt={serviceName}
           className="h-[250px] w-[350px]"
           data-aos="zoom-out"
           data-aos-delay="100"
         />
+ 
         <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50">
           <div
             className="text-center font-roboto text-xl font-medium text-white"
             data-aos="fade-up"
             data-aos-delay="200"
           >
-            {title}
+            {serviceName}
           </div>
         </div>
+ 
         <div className="absolute inset-x-0 bottom-0 flex flex-col items-center justify-center bg-gradient-to-t from-black/60 to-transparent py-4 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100">
           <div className="px-5 text-center font-medium text-white">
             <FaAngleUp
@@ -67,6 +65,7 @@ const ServiceCard = ({ servicedata }) => {
             />
           </div>
         </div>
+ 
         <div
           className={`absolute inset-0 border-2 border-primary-500 bg-secondary-950 p-4 text-white transition-transform duration-500 ease-in-out ${
             isDescriptionVisible
@@ -75,11 +74,12 @@ const ServiceCard = ({ servicedata }) => {
           }`}
         >
           <div className="flex h-full w-full items-center justify-center text-center font-roboto text-sm font-medium md:text-base">
-            <p>{description}</p>
+            <p>{serviceDescription}</p>
           </div>
+ 
           <div className="absolute bottom-0 left-0 right-0 py-2 text-center text-xs font-light md:text-sm">
             <p>
-              Want to see our projects?
+              Want to see our projects?{" "}
               <Link to="/Project">
                 <button className="pl-1 hover:underline" onClick={handleClick}>
                   View here
@@ -89,9 +89,8 @@ const ServiceCard = ({ servicedata }) => {
           </div>
         </div>
       </div>
-      <ContactModal isOpen={isModalOpen} onClose={closeModal} />
     </div>
   );
 };
-
+ 
 export default ServiceCard;

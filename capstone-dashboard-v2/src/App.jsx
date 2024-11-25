@@ -177,7 +177,7 @@ function App() {
       element: <TestimonialForm />,
     },
     {
-      path: "/feedback/:token",
+      path: "/feedback/:id",
       element: <TestimonialForm />,
     },
     {

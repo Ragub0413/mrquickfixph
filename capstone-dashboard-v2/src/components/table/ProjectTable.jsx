@@ -102,8 +102,8 @@ const ProjectTable = () => {
                 "success",
               );
             } catch (error) {
-              console.error("Failed to delete admin:", error);
-              Swal.fire("Error", "Failed to delete admin account.", "error");
+              console.error("Failed to delete project:", error);
+              Swal.fire("Error", "Failed to delete project.", "error");
             }
           }
         });

@@ -9,52 +9,36 @@ import {
 } from "react-icons/tb";
 import { Button, Chip, Tooltip, Typography } from "@material-tailwind/react";
 import Swal from "sweetalert2";
+import { useTestimonialData } from "../../data/TestimonialData";
 
 const TestimonialTable = () => {
   const [testimonials, setTestimonials] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const rowsPerPage = 10;
-
+  const {fetchTestimonialData} = useTestimonialData()
   const statusColors = {
     Published: "blue",
     Draft: "amber",
   };
 
   useEffect(() => {
-    setLoading(true);
-    const testimonialsData = [
-      {
-        id: 1,
-        clientFirstName: "Kenneth",
-        clientLastName: "Altes",
-        testimonialStatus: "Published",
-        testimonialMessage: "This service is amazing! Highly recommended.",
-      },
-      {
-        id: 2,
-        clientFirstName: "Angelica",
-        clientLastName: "Ragub",
-        testimonialStatus: "Draft",
-        testimonialMessage:
-          "Worst service ever! Do not inquire. You will regret it.",
-      },
-      {
-        id: 3,
-        clientFirstName: "Kenneth",
-        clientLastName: "Altes",
-        testimonialStatus: "Published",
-        testimonialMessage: "Great experience overall, thank you!",
-      },
-    ];
+    const initializeData = async ()=>{
+      setLoading(true)
+      try{
+       const data =  await fetchTestimonialData();
+       setTestimonials(data);
 
-    // Simulate loading (remove this if using a real API)
-    setTimeout(() => {
-      setLoading(false);
-    }, 500);
-
-    setTestimonials(testimonialsData);
-  }, []);
+      }
+      catch(error){
+        console.error("Error fetching testimonial:", error);
+      }
+      finally {
+        setLoading(false);
+      }
+     }
+     initializeData();
+  }, [fetchTestimonialData]);
 
   const totalPages = Math.ceil(testimonials.length / rowsPerPage);
 
@@ -136,31 +120,31 @@ const TestimonialTable = () => {
               ) : currentData.length > 0 ? (
                 currentData.map((testimonial, index) => (
                   <tr
-                    key={testimonial.id}
+                    key={testimonial._id}
                     className="text-sm capitalize hover:bg-secondary-50"
                   >
                     <td>{index + 1 + (currentPage - 1) * rowsPerPage}</td>
                     <td>
-                      {testimonial.clientFirstName} {testimonial.clientLastName}
+                      {testimonial.jobID?.clientFirstName} {testimonial.jobID?.clientLastName}
                     </td>
                     <td>
                       {" "}
                       <div className="flex font-semibold">
                         <Chip
                           variant="ghost"
-                          color={statusColors[testimonial.testimonialStatus]}
+                          color={statusColors[testimonial.status]}
                           value={
                             <Typography
                               variant="small"
                               className="font-bold capitalize leading-none"
                             >
-                              {testimonial.testimonialStatus}
+                              {testimonial.status}
                             </Typography>
                           }
                         />
                       </div>
                     </td>
-                    <td>{testimonial.testimonialMessage}</td>
+                    <td>{testimonial.feedbackMessage}</td>
                     <td>
                       {testimonial.testimonialStatus === "Draft" ? (
                         <Tooltip
@@ -174,7 +158,7 @@ const TestimonialTable = () => {
                         >
                           <Button
                             className="!bg-blue-500 !p-1"
-                            onClick={() => handlePublish(testimonial.id)}
+                            onClick={() => handlePublish(testimonial._id)}
                           >
                             <TbCircleCheck className="text-[20px]" />
                           </Button>

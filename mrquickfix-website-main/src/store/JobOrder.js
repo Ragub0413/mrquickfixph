@@ -18,7 +18,7 @@ export const useJobOrder = create((set) => ({
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/api/job-orders', { ...newJob, createdBy: 'Client' }, {
+      const res = await axios.post('http://localhost:5000/api/job-orders/savenofile', { ...newJob, createdBy: 'Client' }, {
         headers: {
           'Content-Type': 'application/json',
         },

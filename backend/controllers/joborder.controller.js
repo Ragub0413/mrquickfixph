@@ -148,12 +148,14 @@ export const addJobOrderNoFileUpload = async (req, res) => {
 
         if (job.createdBy && job.createdBy === "Client") {
             job.createdBy = null;
+            
         } else if (job.createdBy && !mongoose.Types.ObjectId.isValid(job.createdBy)) {
             return res.status(400).json({ success: false, message: "Invalid createdBy ID" });
         }
         const inspectionDate = new Date(job.jobInspectionDate).toDateString();
         const newJob = new JobOrder(job);
         await newJob.save();
+        if(job.createdBy && job.createdBy !== "Client"){
         const mailSent = await sendEmail(
             job.clientEmail,
             "Mr. Quick Fix Project",
@@ -192,6 +194,47 @@ export const addJobOrderNoFileUpload = async (req, res) => {
                 </body>
                 </html>`
         )
+        
+    }
+    else{
+        const mailSent = await sendEmail(
+            job.clientEmail,
+            "Mr. Quick Fix Inquiry",
+            `<!DOCTYPE html>
+            <html lang="en" >
+            <head>
+                <meta charset="UTF-8">
+                <title>Mr. Quick Fix PH Project</title>
+
+
+            </head>
+            <body>
+            <!-- partial:index.partial.html -->
+            <div style="font-family: Helvetica,Arial,sans-serif;min-width:1000px;overflow:auto;line-height:2">
+                <div style="margin:50px auto;width:70%;padding:20px 0">
+                <div style="border-bottom:1px solid #eee">
+                    <a href="" style="font-size:1.4em;color:#FB4700;text-decoration:none;font-weight:600">Mr Quick Fix  </a>
+                </div>
+                <p style="font-size:1.1em">Hi Mr./Ms. ${job.clientLastName},</p>
+               <p>This email is to confirm that we have received your inquiry submitted through our website,<a href=${process.env.FRONTEND_WEBSITE}> Mr. Quick Site </a>. Please be advised that we will use the phone number you provided to contact you for further details and information regarding your inquiry.
+               </p>
+               <p>
+               Thank you for trusting Mr. Quick Fix! </p>
+                <p style="font-size:0.9em;">Warm Regards,<br />Mr. Quick Fix</p>
+                <hr style="border:none;border-top:1px solid #eee" />
+                <div style="float:right;padding:8px 0;color:#aaa;font-size:0.8em;line-height:1;font-weight:300">
+                    <p>Mr Quick Fix PH</p>
+                    <p>Philippines</p>
+                </div>
+                </div>
+            </div>
+            <!-- partial -->
+
+            </body>
+            </html>`
+        )
+
+    }
   
         res.status(201).json({ success: true, data: newJob });
     } catch (error) {
