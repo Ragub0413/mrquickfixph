@@ -43,7 +43,27 @@ export const useTestimonialData = create((set) => ({
           );
         }
     },
-    
+    updateTestimonialStatus: async(id,updateStatus)=>{
+        try{
+            const res = await axios.patch(`/api/testimonial/newStatus/${id}`,updateStatus, {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            const data = res.data;
+            if (!data.success) return { success: false, message: data.message };
+            set((state) => ({
+                testimonials: state.testimonials.map((testimonial) =>
+                    testimonial.id === id ? res.data.data : testimonial
+                ),
+            }));
+            return { success: true, message: "Testimonial Status updated successfully" };
+        }
+        catch(error){
+            console.error("Error updating job order:", error.response?.data || error.message);
+            return { success: false, message: error.response?.data?.message || "An error occurred" };
+        }
+    }
 
     
 }));

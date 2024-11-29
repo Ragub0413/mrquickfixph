@@ -13,6 +13,7 @@ import { useTestimonialData } from "../../data/TestimonialData";
 
 const TestimonialTable = () => {
   const [testimonials, setTestimonials] = useState([]);
+  const [testimonialUpdate,setTestimonialUpdate] = useState({})
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const rowsPerPage = 10;
@@ -46,48 +47,88 @@ const TestimonialTable = () => {
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage,
   );
+  const {updateTestimonialStatus} = useTestimonialData()
+  const handlePublish = async(id) => {
+    
+    console.log(id)
+    
+ 
+    try {
+      const result = await Swal.fire({
+        title: "Do you want to mark this project as completed?",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Complete",
+        icon: "question",
+      });
 
-  const handlePublish = (id) => {
-    Swal.fire({
-      title: "Are you sure you want to publish this testimonial?",
-      icon: "warning",
-      showCancelButton: true,
-    }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Success",
-          text: "Testimonial published successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
+
+        const updateTestimonial = {
+          ...testimonialUpdate,
+          status: "Published"
+        };
+
+        console.log(updateTestimonial)
+        const { success, message } = await updateTestimonialStatus(
+          id,
+          updateTestimonial,
+        );
+       
+        if (!success) {
+          Swal.fire("Oops...", message, "error");
+        } else {
+          Swal.fire(
+            "Completed!",
+            "Testimonial marked as completed successfully!",
+            "success",
+          );
+        }
       }
-    });
+    } catch (error) {
+      Swal.fire("Error", "Failed to update testimonial.", "error");
+      console.error("Error updating testimonial:", error);
+    }
   };
 
-  const handleUnPublish = (id) => {
-    Swal.fire({
-      title: "Are you sure you want to unpublish this testimonial?",
-      icon: "warning",
-      showCancelButton: true,
-    }).then((result) => {
+  const handleUnPublish = async(id) => {
+  
+    console.log(id)
+    try {
+      const result = await Swal.fire({
+        title: "Do you want to mark this project as completed?",
+        showCancelButton: true,
+        confirmButtonText: "Yes, Complete",
+        icon: "question",
+      });
+
       if (result.isConfirmed) {
-        Swal.fire({
-          title: "Success",
-          text: "Testimonial unpublished successfully",
-          icon: "success",
-          confirmButtonText: "OK",
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });
+
+        const updateTestimonial = {
+          ...testimonialUpdate,
+          status: "Draft"
+        };
+
+        console.log(updateTestimonial)
+        const { success, message } = await updateTestimonialStatus(
+          id,
+          updateTestimonial,
+        );
+        if (!success) {
+          Swal.fire("Oops...", message, "error");
+        } else {
+          Swal.fire(
+            "Completed!",
+            "Testimonial marked as completed successfully!",
+            "success",
+          );
+        }
       }
-    });
+    } catch (error) {
+      Swal.fire("Error", "Failed to update testimonial", "error");
+      console.error("Error updating testmonial:", error);
+    }
   };
+
 
   return (
     <div className="border border-secondary-200">
@@ -146,7 +187,7 @@ const TestimonialTable = () => {
                     </td>
                     <td>{testimonial.feedbackMessage}</td>
                     <td>
-                      {testimonial.testimonialStatus === "Draft" ? (
+                      {testimonial.status === "Draft" ? (
                         <Tooltip
                           content="Publish"
                           className="!bg-opacity-60"
@@ -158,7 +199,9 @@ const TestimonialTable = () => {
                         >
                           <Button
                             className="!bg-blue-500 !p-1"
-                            onClick={() => handlePublish(testimonial._id)}
+                            onClick={() => {
+                              setTestimonialUpdate(testimonial)
+                              handlePublish(testimonial._id)}}
                           >
                             <TbCircleCheck className="text-[20px]" />
                           </Button>
@@ -175,7 +218,7 @@ const TestimonialTable = () => {
                         >
                           <Button
                             className="!bg-red-500 !p-1"
-                            onClick={() => handleUnPublish(testimonial.id)}
+                            onClick={() => handleUnPublish(testimonial._id)}
                           >
                             <TbArrowForward className="text-[20px]" />
                           </Button>

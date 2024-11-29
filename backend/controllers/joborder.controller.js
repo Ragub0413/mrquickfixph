@@ -67,6 +67,7 @@ export const addJobOrder = async (req, res) => {
                 </body>
                 </html>`
             )
+    
         } else if (job.createdBy && !mongoose.Types.ObjectId.isValid(job.createdBy)) {
             return res.status(400).json({ success: false, message: "Invalid createdBy ID" });
         }

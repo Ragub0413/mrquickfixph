@@ -89,11 +89,9 @@ export const useServicesData = create((set) => ({
         }
     },
     updateImageService: async (serviceId, imageFile) => {
-        const formData = new FormData();
-        formData.append("serviceImage", imageFile);
- 
+      
         try {
-            const res = await axios.patch(`/api/services/update-image/${serviceId}`, formData, {
+            const res = await axios.patch(`/api/services/update-image/${serviceId}`, imageFile, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },

@@ -34,6 +34,8 @@ const ServicesTable = () => {
   const [serviceName, setServiceName] = useState("");
   const [jobType, setJobType] = useState("");
   const [description, setDescription] = useState("");
+  const [updateSelectedService,setUpdateSelectedService] = useState({})
+  const [newUp,setUp] = useState(null)
  const {fetchServiceData} = useServicesData()
   // useEffect(() => {
   //   setLoading(true);
@@ -172,7 +174,7 @@ const ServicesTable = () => {
     setImageService(null);
   };
  
-  const handleUpdateService = async () => {
+  const handleUpdateService = async (service) => {
     if (!serviceName || !jobType || !description || !imageService) {
       Swal.fire({
         icon: "error",
@@ -182,7 +184,14 @@ const ServicesTable = () => {
       });
       return;
     }
- 
+    const isValidURL =(url)=>{
+      try {
+        new URL(url);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
     const updatedData = {
       serviceName,
       typeofJob: jobType,
@@ -204,10 +213,29 @@ const ServicesTable = () => {
             editService._id,
             updatedData,
           );
- 
-          if (imageService instanceof File) {
-            await updateImageService(editService._id, imageService);
-          }
+          // const imageFile = new FormData();
+          // imageFile.append("serviceImage",imageService)
+
+          // if (imageService instanceof File) {
+          //   const updateData ={
+          //     ...updateSelectedService,
+          //     serviceImage: newUp
+          //   }
+          //   console.log(updateData)
+          //   await updateImageService(editService._id, updateData);
+          // }
+           if(!isValidURL(newUp)){
+            const imageFile = new FormData();
+            imageFile.append("serviceImage",newUp);
+            imageFile.append("serviceName",serviceName)
+            imageFile.append("typeofJob",jobType)
+            imageFile.append("serviceDescription",description)
+            for(let value of imageFile.values()){
+              console.log(value)
+            }
+             await updateImageService(editService._id, imageFile);
+           }
+
  
           setServices((prevState) =>
             prevState.map((service) =>
@@ -223,7 +251,7 @@ const ServicesTable = () => {
                 ? { ...service, serviceImageURL: imageService }
                 : service,
             ),
-          );
+          );  
  
           setEditService(null);
           setServiceName("");
@@ -319,7 +347,9 @@ const ServicesTable = () => {
                           >
                             <Button
                               className="!bg-blue-500 !p-1"
-                              onClick={() => handleEditService(service)}
+                              onClick={() =>{
+                                setUpdateSelectedService(service)
+                                 handleEditService(service)}}
                             >
                               <TbEdit className="text-[20px]" />
                             </Button>
@@ -434,6 +464,7 @@ const ServicesTable = () => {
                         const file = e.target.files[0];
                         if (file) {
                           setImageService(URL.createObjectURL(file));
+                          setUp(file)
                         }
                       }}
                       className="hidden"

@@ -42,3 +42,27 @@ export const getFeedback = async(req,res)=>{
         res.status(500).json({ success: false, message: "Server Error: Failed to fetch job orders" });
     }
 }
+export const updateStatus = async(req,res)=>{
+    const {id} = req.params;
+    const feedback = req.body;
+
+    try{
+        if(!mongoose.Types.ObjectId.isValid(id)){
+            return res.status(404).json({ success: false, message: "Testimonial not found" });
+        }
+        const updateTestimonial = await Testimonials.findByIdAndUpdate(
+            id,
+            feedback,
+            {new: true}
+        ).populate("jobID", "clientFirstName clientLastName")
+        
+        if (!updateTestimonial) {
+            return res.status(404).json({ success: false, message: "Job order not found" });
+        }
+        res.status(200).json({ success: true, data: updateTestimonial });
+    }
+    catch(error){
+        console.error("Error updating testimonia:", error.message);
+        res.status(500).json({ success: false, message: "Server Error: Failed to update testimonial status" });
+    }
+}

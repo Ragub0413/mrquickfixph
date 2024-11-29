@@ -91,7 +91,7 @@ export const editService = async(req,res)=>{
 }
 ///update the serviceImage
 export const editServicewImage = async(req,res)=>{
-    const {id} = params;
+    const {id} = req.params;
     const service = req.body;
     const buffer = req.file.buffer;
     // if (!mongoose.Types.ObjectId.isValid(id)) {
