@@ -37,26 +37,7 @@ const ServicesTable = () => {
   const [updateSelectedService,setUpdateSelectedService] = useState({})
   const [newUp,setUp] = useState(null)
  const {fetchServiceData} = useServicesData()
-  // useEffect(() => {
-  //   setLoading(true);
-
-  //   // const sampleServices = [
-  //   //   {
-  //   //     serviceName: "Fits-outs (Painting, Carpentry, Masonry)",
-  //   //     jobType: "Repairs",
-  //   //     image: "https://via.placeholder.com/500",
-  //   //     description:
-  //   //       "We have been offering professional services such as painting, carpentry and masonry. Our team of experts will handle every aspect of your fits-out project, from start to finish.",
-  //   //   },
-  //   //];
-
-  //   // Simulate loading (remove this if using a real API)
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 500);
-
-  //   setServices(sampleServices);
-  // }, []);
+  
   const throttledFetchProjects = useCallback(throttle(fetchServiceData, 60000), [
     fetchServiceData,
   ]);

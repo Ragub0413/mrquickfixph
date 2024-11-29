@@ -42,7 +42,22 @@ const {createTestimonial} = useTestimonialData();
         icon: "success",
         title: "Success",
         text: message,
-      });
+      }).then((result)=>{
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Thank you",
+            text: "Do you want to visit our website?",
+            showCancelButton: true,
+            confirmButtonText: "OK",
+            confirmButtonText: "Yes",
+            icon: "question",
+          }).then(async (finalResult) => {
+            if(finalResult.isConfirmed){
+             window.location.href = 'http://localhost:5174/'
+            }
+          });
+        }
+      })
     //  onClose();
     }
     // Swal.fire({
