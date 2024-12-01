@@ -17,6 +17,7 @@ import dayjs from "dayjs";
 const ProfileCard = ({ admin }) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [profileImage, setProfileImage] = useState(null);
+  const [img, setImg] = useState(null)
   const [imagePreview, setImagePreview] = useState(null);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
@@ -24,8 +25,8 @@ const ProfileCard = ({ admin }) => {
   const [loading, setLoading] = useState(false);
   const [emailLoading, setEmailLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const { updateAdmin, forgotPass } = useAdminData();
+  const userID = localStorage.getItem("userID");
+  const { updateAdmin, forgotPass,uploadProfile } = useAdminData();
 
   useEffect(() => {
     if (admin) {
@@ -79,12 +80,35 @@ const ProfileCard = ({ admin }) => {
         setImagePreview(reader.result);
       };
       reader.readAsDataURL(file);
+      setImg(file)
     }
   };
 
-  const handleSave = () => {
+  const handleSave = async() => {
     setProfileImage(imagePreview);
+   // console.log(img)
     setImagePreview(null);
+    setLoading(true)
+   
+    try{
+      await uploadProfile(userID,img)
+      setLoading(false)
+    Swal.fire({
+      title: "Success",
+      text: "Profile updated successfully.",
+      icon: "success",
+      confirmButtonText: "OK",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        window.location.reload();
+      }
+    });
+  } catch (err) {
+    setLoading(false);
+    setError("Failed to update profile. Please try again.");
+    Swal.fire("Error", "Failed to update profile.", "error");
+  }
+    
   };
 
   const handleCancel = () => {
@@ -201,7 +225,7 @@ const ProfileCard = ({ admin }) => {
             </label>
 
             <img
-              src={imagePreview || profileImage || DefaultPicture}
+              src={imagePreview || admin.profilePicture || DefaultPicture}
               alt="avatar"
               className="h-32 w-32 select-none rounded-full ring-4 ring-primary-500"
             />
@@ -216,7 +240,7 @@ const ProfileCard = ({ admin }) => {
             {imagePreview && (
               <div className="absolute -bottom-[50px] mt-4 flex gap-2">
                 <Button className="bg-blue-500" size="sm" onClick={handleSave}>
-                  Save Changes
+                  {loading ? "Saving..." : "Save Changes"}
                 </Button>
                 <Button
                   variant="outlined"

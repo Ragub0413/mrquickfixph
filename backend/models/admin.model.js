@@ -28,6 +28,9 @@ const adminSchema = new mongoose.Schema({
   profilePicture: {
     type: String, 
   },
+  profilePublickey:{
+    type:String
+  },
   isEmailVerified: {
     type: Boolean,
     default: false,

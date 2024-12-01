@@ -263,6 +263,27 @@ updateAdmin: async (formData) => {
     }
   },
 
+  uploadProfile: async(adminID, profilePicture)=>{
+    set({ loading: true, error: null });
+    const formPicture = new FormData();
+    formPicture.append("profile",profilePicture);
+    console.log(profilePicture)
+    try{
+    const res = await axios.patch(`/api/auth/change-profile/${adminID}`, formPicture);
+    set((state) => ({
+      admins: state.admins.map((admin) => (admin._id === formData._id ? res.data : admin)),
+    }));
+    return res.data;
+    }
+    catch(error){
+      set({
+        error: error.response?.data?.message || error.message,
+        loading: false,
+      });
+      Swal.fire("Error", error.response?.data?.message || "Failed to change profile.", "error");
+      throw error;
+    }
+  },
   // Activate admin
   activateAdmin: async (adminId) => {
     set({ loading: true, error: null });

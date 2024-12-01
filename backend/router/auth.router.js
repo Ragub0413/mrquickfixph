@@ -13,9 +13,12 @@ import {
   updateAdmin,
   deactivateAdmin,
   activateAdmin,
-  deleteAdmin
+  deleteAdmin,
+  File_Storage,
+  changeProfilePicture
 } from '../controllers/auth.controller.js'; 
-
+import multer from 'multer';
+const upload = multer({storage:File_Storage});
 const router = express.Router();
 
 router.post("/signup", signup);
@@ -32,5 +35,6 @@ router.patch('/:id', updateAdmin)
 router.patch('/deactivate/:id', deactivateAdmin)
 router.patch('/activate/:id', activateAdmin)
 router.delete('/delete/:id', deleteAdmin)
+router.patch('/change-profile/:id',upload.single("profile"),changeProfilePicture)
 
 export default router;

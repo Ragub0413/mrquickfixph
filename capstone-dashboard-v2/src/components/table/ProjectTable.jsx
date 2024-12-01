@@ -87,7 +87,6 @@ const ProjectTable = () => {
           title: "Are you sure?",
           text: "This action cannot be undone!",
           showCancelButton: true,
-          confirmButtonText: "OK",
           confirmButtonText: "Yes, delete it!",
           icon: "warning",
         }).then(async (finalResult) => {
