@@ -189,11 +189,15 @@ const NavBar = () => {
           setOpenNotification(false);
         }}
       >
-        <img
+        {/* <img
           src={DefaultImage}
           className="h-11 rounded-full ring-2 ring-primary-500"
+        /> */}
+        {admin && (<>
+          <img
+          src={admin.profilePicture || DefaultImage}
+          className="h-11 rounded-full ring-2 ring-primary-500"
         />
-        {admin && (
           <div className="ml-4 hidden flex-col text-center md:flex">
             <div className="flex gap-1">
               <span>{admin.firstName || "Best"}</span>
@@ -202,7 +206,7 @@ const NavBar = () => {
             <span className="text-sm font-semibold capitalize">
               {admin.role || "Admin"}
             </span>
-          </div>
+          </div></>
         )}
         <MdKeyboardArrowDown className="ml-2 text-[18px] text-secondary-500" />
         {/* Profile Dropdown */}
